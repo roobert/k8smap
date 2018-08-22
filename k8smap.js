@@ -1,7 +1,7 @@
 /*
-
    TODO
 
+     * flexbox - stretch header column
      * foldable 'details' pane
      * new window 'details' pane
      * colour scheme
@@ -15,8 +15,6 @@
        * services
          * load balancers
      * clicking on stuff takes you to k8s ui / logs, etc?
-
-
 */
 Vue.component('k8smap-node', {
     props: ['node', 'pods'],
