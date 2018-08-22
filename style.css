@@ -1,0 +1,39 @@
+.container-fluid {
+  background-color: #ffffff;
+}
+
+.header {
+  padding-top: 10px;
+
+}
+
+.header .logo {
+  text-align: right;
+}
+
+.header .context {
+  text-align: bottom;
+}
+
+.node {
+  background-color: #e6f2ff;
+  margin: 10px;
+  padding: 10px;
+}
+
+.node.head {
+  font-weight: bold;
+}
+
+.pod {
+  color: #0080ff;
+  background-color: #b3d9ff;
+  margin: 10px;
+  padding: 10px;
+}
+
+.container {
+  background-color: white;
+  color: #333333;
+  margin-top: 10px;
+}
