@@ -1,6 +1,8 @@
 /*
    TODO
 
+     * add a key in modal popup?
+     * zone / node / pod / container state
      * flexbox - stretch header column
      * foldable 'details' pane
      * new window 'details' pane
