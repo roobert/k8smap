@@ -1,6 +1,6 @@
 /*
    TODO
-
+     - pods should be in namespaces
      * add a key in modal popup?
      * zone / node / pod / container state
      * flexbox - stretch header column
@@ -18,6 +18,7 @@
          * load balancers
      * clicking on stuff takes you to k8s ui / logs, etc?
 */
+
 Vue.component('k8smap-node', {
     props: ['node', 'pods'],
     template: `

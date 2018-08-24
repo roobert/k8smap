@@ -15,6 +15,8 @@
         <div v-if="loading">Loading..</div>
         <div v-else>
 
+          <slideout-panel></slideout-panel>
+
           <! hierarchy: projects / clusters / nodes / pods / containers />
 
           <div class="container-fluid">
@@ -68,6 +70,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 
+    <script src="panel-service.js" type="module"></script>
+    <script src="panel.js" type="module"></script>
     <script src="k8smap.js"></script>
   </body>
 </html>
