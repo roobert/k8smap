@@ -6,14 +6,21 @@
     <section v-else>
       <div v-if="loading">Loading..</div>
       <div v-else>
-        <!-- hierarchy: projects / clusters / nodes / pods / containers -->
-
         <div class="container-fluid">
           <div class="row header">
             <div class="col-sm context">
-              bw-test0 / cluster0
+              <!-- FIXME: add tokens to nginx config for each project -->
+              <!-- FIXME: load list of projects from file or something? -->
+              <!-- FIXME: loop through list if not match current contextPath.. -->
+              <!-- FIXME: selecting a new context should change url, so these should be href.. -->
+              <b-dropdown id="context-select" v-bind:text="contextPath" class="m-md-2">
+                <b-dropdown-item>...</b-dropdown-item>
+              </b-dropdown>
             </div>
-            <div class="logo col-sm">
+
+            <k8s-context-drop-down v-bind:context="context"></k8s-context-drop-down-item>
+
+            <div class="col-sm logo">
               <img src="../assets/logo.png" width="40px">
             </div>
           </div>
@@ -48,6 +55,11 @@ export default {
   },
   data () {
     return {
+      // FIXME - url should define initial project, otherwise show panel to select project
+      project: 'bw-test0',
+      region: 'europe-west1',
+      zone: 'b',
+      cluster: 'cluster0',
       errored: false,
       loading: true,
       namespaces: null,
@@ -56,12 +68,17 @@ export default {
       services: null
     }
   },
+  computed: {
+    contextPath: function() {
+      return this.project + '/' + this.region + '/' + this.zone + '/' + this.cluster
+    }
+  },
   mounted () {
     axios.all([
-      axios.get('/k8s/bw-test0/europe-west1/b/cluster0/api/v1/namespaces'),
-      axios.get('/k8s/bw-test0/europe-west1/b/cluster0/api/v1/nodes'),
-      axios.get('/k8s/bw-test0/europe-west1/b/cluster0/api/v1/pods'),
-      axios.get('/k8s/bw-test0/europe-west1/b/cluster0/api/v1/services')
+      axios.get('/k8s/' + this.contextPath + '/api/v1/namespaces'),
+      axios.get('/k8s/' + this.contextPath + '/api/v1/nodes'),
+      axios.get('/k8s/' + this.contextPath + '/api/v1/pods'),
+      axios.get('/k8s/' + this.contextPath + '/api/v1/services'),
     ])
     .then(axios.spread((namespacesResponse, nodesResponse, podsResponse, servicesResponse) => {
       this.namespaces = namespacesResponse,
@@ -90,7 +107,7 @@ export default {
 }
 
 .header .context {
-  text-align: bottom;
+  text-align: left;
 }
 
 .node {
