@@ -1,6 +1,9 @@
 <template>
   <ul>
-    <li v-for="cluster in context.clusters">
+    <li
+      v-for="cluster in context.clusters"
+      v-bind:key="cluster.cluster"
+    >
       <a v-bind:href="projectPathLink(context.project, cluster.region, cluster.zone, cluster.cluster)">
         {{ projectPathPretty(context.project, cluster.region, cluster.zone, cluster.cluster) }}
       </a>
