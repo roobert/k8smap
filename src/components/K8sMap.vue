@@ -2,6 +2,7 @@
   <div id="k8s-map">
     <section v-if="errored">
       <p>failure fetching data from kubernetes API</p>
+      {{ contextPath }}
     </section>
     <section v-else>
       <div v-if="loading">Loading..</div>
@@ -13,12 +14,13 @@
               <!-- FIXME: load list of projects from file or something? -->
               <!-- FIXME: loop through list if not match current contextPath.. -->
               <!-- FIXME: selecting a new context should change url, so these should be href.. -->
-              <b-dropdown id="context-select" v-bind:text="contextPath" class="m-md-2">
-                <b-dropdown-item>...</b-dropdown-item>
-              </b-dropdown>
+              <k8s-map-context-drop-down
+                v-bind:contexts="contexts"
+                v-bind:currentContext="contextPath"
+              >
+              </k8s-map-context-drop-down>
             </div>
 
-            <k8s-context-drop-down v-bind:context="context"></k8s-context-drop-down-item>
 
             <div class="col-sm logo">
               <img src="../assets/logo.png" width="40px">
@@ -41,25 +43,30 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+import { contexts as k8sContexts } from '../../config'
+import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import K8sMapNode from './K8sMapNode.vue'
+import K8sMapContextDropDown from './K8sMapContextDropDown.vue'
 
 export default {
   name: 'k8s-map',
+  props: [
+    'project',
+    'region',
+    'zone',
+    'cluster'
+  ],
   components: {
-    'k8s-map-node': K8sMapNode
+    'k8s-map-node': K8sMapNode,
+    'k8s-map-context-drop-down': K8sMapContextDropDown
   },
   data () {
     return {
       // FIXME - url should define initial project, otherwise show panel to select project
-      project: 'bw-test0',
-      region: 'europe-west1',
-      zone: 'b',
-      cluster: 'cluster0',
+      contexts: k8sContexts,
       errored: false,
       loading: true,
       namespaces: null,
@@ -68,9 +75,20 @@ export default {
       services: null
     }
   },
+ /* created () {
+    console.log(this.$route);
+  },
+  methods: {
+  },
+  */
   computed: {
     contextPath: function() {
       return this.project + '/' + this.region + '/' + this.zone + '/' + this.cluster
+    }
+  },
+  watch: {
+    '$route'() {
+      // FIXME: does this watcher update props on route change, or do we need to manually update the properties?
     }
   },
   mounted () {

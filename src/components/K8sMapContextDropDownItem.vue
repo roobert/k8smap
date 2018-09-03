@@ -1,5 +1,5 @@
 <template>
-  <b-dropdown-item v-bind:text="contextPath"></b-dropdown-item>
+  <b-dropdown-item v-bind:text="context"></b-dropdown-item>
 </template>
 
 <script>

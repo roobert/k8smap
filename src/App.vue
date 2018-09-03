@@ -2,7 +2,6 @@
   <div id="app">
     <K8sMap />
   </div>
-
 </template>
 
 <script>

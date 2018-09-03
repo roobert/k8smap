@@ -1,0 +1,19 @@
+{
+  // eslint-disable-next-line
+  contexts: [
+    {
+      project: '',
+      clusters: [
+        {
+          cluster: '',
+          region: '',
+          zone: '',
+          api: {
+            address: '',
+            token: ''
+          }
+        }
+      ]
+    }
+  ]
+}
