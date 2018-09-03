@@ -14,11 +14,13 @@
               <!-- FIXME: load list of projects from file or something? -->
               <!-- FIXME: loop through list if not match current contextPath.. -->
               <!-- FIXME: selecting a new context should change url, so these should be href.. -->
+              <!--
               <k8s-map-context-drop-down
                 v-bind:contexts="contexts"
                 v-bind:currentContext="contextPath"
               >
               </k8s-map-context-drop-down>
+              -->
             </div>
 
 
