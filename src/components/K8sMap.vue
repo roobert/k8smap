@@ -23,7 +23,9 @@
 
 
             <div class="col-sm logo">
-              <img src="../assets/logo.png" width="40px">
+              <a href="/">
+                <img src="../assets/logo.png" width="40px">
+              </a>
             </div>
           </div>
           <!-- one row per cluster? -->
