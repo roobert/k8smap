@@ -1,11 +1,11 @@
 <template>
   <b-dropdown id="context-select" v-bind:text="currentContext" class="m-md-2">
-    <k8s-context-drop-down-item
+    <k8s-map-context-drop-down-item
       v-for="context in contexts"
       v-bind:key="context.index"
       v-bind:context="context"
     >
-    </k8s-context-drop-down-item>
+    </k8s-map-context-drop-down-item>
   </b-dropdown>
 </template>
 
