@@ -65,7 +65,6 @@ export default {
   },
   data () {
     return {
-      // FIXME - url should define initial project, otherwise show panel to select project
       contexts: k8sContexts,
       errored: false,
       loading: true,

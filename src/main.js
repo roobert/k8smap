@@ -23,11 +23,12 @@ const routes = [
   }
 ]
 
-// FIXME: set history mode to remove '#' -- requires client handles 404s
 const router = new VueRouter({
+  mode: 'history',
   routes: routes
 })
 
 new Vue({
-  router
+  router,
+  render: h => h(K8sMapContextPicker)
 }).$mount('#app')
