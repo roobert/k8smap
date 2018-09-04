@@ -1,21 +1,28 @@
 # k8smap
 
-## Project setup
+## Configure
+
+Configure API end points:
 ```
-npm install
+cp conf/config.js.example conf/config.js
+vi conf/config.js
 ```
 
-### Compiles and hot-reloads for development
+Generate NGiNX config:
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+make configure
 ```
 
-### Lints and fixes files
+## Build
+
+Build container:
 ```
-npm run lint
+make build
+```
+
+## Deploy
+
+Deploy to Kubernetes:
+```
+make deploy
 ```
