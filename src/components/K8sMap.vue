@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { contexts as k8sContexts } from '../../config'
+import { contexts as k8sContexts } from '../../conf/config'
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
