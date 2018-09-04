@@ -1,4 +1,5 @@
 config.js
+nginx.conf
 
 .DS_Store
 node_modules

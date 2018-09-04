@@ -1,22 +1,29 @@
 <template>
-  <b-dropdown id="context-select" v-bind:text="currentContext" class="m-md-2">
-    <k8s-map-context-drop-down-item
-      v-for="context in contexts"
-      v-bind:key="context.index"
+  <div>
+    <b-dropdown
+      id="context-select"
+      class="m-md-2"
+      v-for="cluster in context.clusters"
+      v-bind:cluster="cluster"
       v-bind:context="context"
     >
-    </k8s-map-context-drop-down-item>
-  </b-dropdown>
+      <b-dropdown-item v-bind:href="projectPathLink(context.project, cluster.region, cluster.zone, cluster.cluster)" v-bind:text="projectPathPretty(context.project, cluster.region, cluster.zone, cluster.cluster)">
+      </b-dropdown-item>
+    </b-dropdown>
+  </div>
 </template>
 
 <script>
-import K8sMapContextDropDownItem from './K8sMapContextDropDownItem.vue'
-
 export default {
   name: 'k8s-map-context-drop-down',
-  props: ['contexts', 'currentContext'],
-  components: {
-    'k8s-map-context-drop-down-item': K8sMapContextDropDownItem
+  props: ['context', 'currentContext'],
+  methods: {
+    projectPathPretty(project, region, zone, cluster) {
+      return [project, region, zone, cluster].join(' / ')
+    },
+    projectPathLink(project, region, zone, cluster) {
+      return ['/context', project, region, zone, cluster].join('/')
+    }
   }
 }
 </script>

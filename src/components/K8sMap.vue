@@ -10,17 +10,15 @@
         <div class="container-fluid">
           <div class="row header">
             <div class="col-sm context">
-              <!-- FIXME: add tokens to nginx config for each project -->
-              <!-- FIXME: load list of projects from file or something? -->
-              <!-- FIXME: loop through list if not match current contextPath.. -->
-              <!-- FIXME: selecting a new context should change url, so these should be href.. -->
-              <!--
-              <k8s-map-context-drop-down
-                v-bind:contexts="contexts"
-                v-bind:currentContext="contextPath"
-              >
-              </k8s-map-context-drop-down>
-              -->
+              <b-dropdown v-bind:text="currentContext" >
+                <k8s-map-context-drop-down
+                  v-for="context in contexts"
+                  v-bind:key="context.index"
+                  v-bind:context="context"
+                  v-bind:currentContext="contextPath"
+                >
+                </k8s-map-context-drop-down>
+              </b-dropdown>
             </div>
 
 
@@ -30,7 +28,6 @@
               </a>
             </div>
           </div>
-          <!-- one row per cluster? -->
           <div class="row">
             <k8s-map-node
               v-for="node in nodes.data.items"
