@@ -1,17 +1,29 @@
 <template>
-  <b-dropdown-item v-bind:href="projectPathLink(context.project, cluster.region, cluster.zone, cluster.cluster)" v-bind:text="projectPathPretty(context.project, cluster.region, cluster.zone, cluster.cluster)">
-  </b-dropdown-item>
+  <div class="dropdown-item">
+    {{ cotextPathPretty(context.project, cluster.region, cluster.zone, cluster.cluster) }}
+  </div>
+
+  <!--div>
+    <div class="dropdown-item"
+      v-for="cluster in context.clusters"
+      v-bind:key="cluster.cluster"
+      v-bind:cluster="cluster">
+      test
+      {{ cotextPathPretty(context.project, cluster.region, cluster.zone, cluster.cluster) }}
+    </div>
+  </div -->
 </template>
 
 <script>
+  //    v-bind:href="cotextPathLink(context.project, cluster.region, cluster.zone, cluster.cluster)"
 export default {
   name: 'k8s-map-context-drop-down',
   props: ['context'],
   methods: {
-    projectPathPretty(project, region, zone, cluster) {
+    cotextPathPretty(project, region, zone, cluster) {
       return [project, region, zone, cluster].join(' / ')
     },
-    projectPathLink(project, region, zone, cluster) {
+    cotextPathLink(project, region, zone, cluster) {
       return ['/context', project, region, zone, cluster].join('/')
     }
   }

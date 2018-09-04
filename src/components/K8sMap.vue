@@ -2,7 +2,7 @@
   <div id="k8s-map">
     <section v-if="errored">
       <p>failure fetching data from kubernetes API</p>
-      {{ contextPath }}
+      {{ contextPathPrettyCurrent }}
     </section>
     <section v-else>
       <div v-if="loading">Loading..</div>
@@ -10,17 +10,21 @@
         <div class="container-fluid">
           <div class="row header">
             <div class="col-sm context">
-              <b-dropdown v-bind:text="currentContext" >
-                <k8s-map-context-drop-down
-                  v-for="context in contexts"
-                  v-bind:key="context.index"
-                  v-bind:context="context"
-                  v-bind:currentContext="contextPath"
+              <b-dropdown
+                id="context-picker"
+                v-bind:text="contextPathPretty(project, region, zone, cluster)"
+                class="m-md-2"
+                v-for="dropdownItem in dropdownItems"
+                v-bind:key="dropdownItem.link"
+                v-bind:dropdownItem="dropdownItem"
+              >
+                <b-dropdown-item
+                  v-bind:href="dropdownItem.link"
                 >
-                </k8s-map-context-drop-down>
+                  {{ dropdownItem.pretty }}
+                </b-dropdown-item>
               </b-dropdown>
             </div>
-
 
             <div class="col-sm logo">
               <a href="/">
@@ -51,6 +55,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import K8sMapNode from './K8sMapNode.vue'
 import K8sMapContextDropDown from './K8sMapContextDropDown.vue'
+import K8sMapContextDropDownItem from './K8sMapContextDropDownItem.vue'
 
 export default {
   name: 'k8s-map',
@@ -62,7 +67,19 @@ export default {
   ],
   components: {
     'k8s-map-node': K8sMapNode,
-    'k8s-map-context-drop-down': K8sMapContextDropDown
+    'k8s-map-context-drop-down': K8sMapContextDropDown,
+    'k8s-map-context-drop-down-item': K8sMapContextDropDownItem
+  },
+  methods: {
+    contextPathPretty(project, region, zone, cluster) {
+      return [project, region, zone, cluster].join(' / ')
+    },
+    contextPathLink(project, region, zone, cluster) {
+      return ['/context', project, region, zone, cluster].join('/')
+    },
+    contextPath(project, region, zone, cluster) {
+      return [project, region, zone, cluster].join('/')
+    },
   },
   data () {
     return {
@@ -75,15 +92,29 @@ export default {
       services: null
     }
   },
- /* created () {
-    console.log(this.$route);
-  },
-  methods: {
-  },
-  */
   computed: {
-    contextPath: function() {
-      return this.project + '/' + this.region + '/' + this.zone + '/' + this.cluster
+    contextPathPrettyCurrent () {
+      return this.contextPathPretty(this.project, this.region, this.zone, this.cluster)
+    },
+    contextPathCurrent () {
+      return this.contextPath(this.project, this.region, this.zone, this.cluster)
+    },
+    dropdownItems () {
+      var collection = [];
+      for (let context of this.contexts) {
+        for (let cluster of context.clusters) {
+          if (this.contextPathPrettyCurrent !=
+            this.contextPathPretty(context.project, cluster.region, cluster.zone, cluster.cluster)) {
+            collection.push(
+              {
+                pretty: this.contextPathPretty(context.project, cluster.region, cluster.zone, cluster.cluster),
+                link: this.contextPathLink(context.project, cluster.region, cluster.zone, cluster.cluster)
+              }
+            )
+          }
+        } 
+      }
+      return collection
     }
   },
   watch: {
@@ -93,10 +124,10 @@ export default {
   },
   mounted () {
     axios.all([
-      axios.get('/k8s/' + this.contextPath + '/api/v1/namespaces'),
-      axios.get('/k8s/' + this.contextPath + '/api/v1/nodes'),
-      axios.get('/k8s/' + this.contextPath + '/api/v1/pods'),
-      axios.get('/k8s/' + this.contextPath + '/api/v1/services'),
+      axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/namespaces'),
+      axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/nodes'),
+      axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/pods'),
+      axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/services'),
     ])
     .then(axios.spread((namespacesResponse, nodesResponse, podsResponse, servicesResponse) => {
       this.namespaces = namespacesResponse,
