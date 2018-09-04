@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { contexts as k8sContexts } from '../../config'
+import { contexts as k8sContexts } from '../../conf/config'
 
 export default {
   name: 'k8s-map-context-picker',
