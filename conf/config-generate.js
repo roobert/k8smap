@@ -50,8 +50,7 @@ exec("kubectl config view --raw --output json",
         })
       }
 
-      console.log('module.exports = \\')
-      console.log(JSON.stringify(config, null, 2))
+      console.log('module.exports = ' + JSON.stringify(config, null, 2))
    });
 
 
