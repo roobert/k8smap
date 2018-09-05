@@ -1,5 +1,6 @@
 
 TODO
+ * missing config should raise error
  - pods should be in namespaces
  * add a key in modal popup?
  * zone / node / pod / container state

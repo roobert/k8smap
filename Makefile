@@ -1,4 +1,5 @@
-#PATH="/usr/local/bin:../node_modules/.bin:$PATH"
+PATH  := ../node_modules/.bin:$(PATH)
+SHELL := env PATH=$(PATH) /bin/bash
 
 .DEFAULT_GOAL := serve
 
@@ -8,7 +9,8 @@ install:
 
 configure:
 	@cd conf \
-	&& generate-nginx-config.sh
+	&& ./bin/config-generate.js > config.js \
+	&& ./bin/nginx-config-generate.js > nginx.conf
 
 build:
 
