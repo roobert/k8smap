@@ -99,20 +99,36 @@ export default {
     contextPathCurrent () {
       return this.contextPath(this.project, this.region, this.zone, this.cluster)
     },
+    context () {
+      return {
+        project: this.project,
+        region: this.region,
+        zone: this.zone,
+        cluster: this.cluster
+      }
+    },
     dropdownItems () {
       var collection = [];
+
       for (let context of this.contexts) {
-        for (let cluster of context.clusters) {
-          if (this.contextPathPrettyCurrent !=
-            this.contextPathPretty(context.project, cluster.region, cluster.zone, cluster.cluster)) {
-            collection.push(
-              {
-                pretty: this.contextPathPretty(context.project, cluster.region, cluster.zone, cluster.cluster),
-                link: this.contextPathLink(context.project, cluster.region, cluster.zone, cluster.cluster)
-              }
-            )
-          }
-        } 
+        if (JSON.stringify(this.context) !== JSON.stringify(context)) {
+          collection.push(
+            {
+              pretty: this.contextPathPretty(
+                context.project,
+                context.region,
+                context.zone,
+                context.cluster
+              ),
+              link: this.contextPathLink(
+                context.project,
+                context.region,
+                context.zone,
+                context.cluster
+              )
+            }
+          )
+        }
       }
       return collection
     }
