@@ -12,3 +12,7 @@ server {
   proxy_redirect off;
   error_log /var/log/nginx/error.log notice;
   rewrite_log on;
+
+  location / {
+    proxy_pass http://localhost:8080;
+  }

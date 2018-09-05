@@ -24,6 +24,11 @@ exec("kubectl config view --raw --output json",
 
       for (const [index, context] of Object.entries(kubeConfig["contexts"])) {
         contextData = context.name.split('_');
+
+        if (contextData.length != 4) {
+          continue
+        }
+
         project     = contextData[1]
         region      = contextData[2].replace(/-.$/, "")
         zone        = contextData[2].split('-')[2]
@@ -31,6 +36,10 @@ exec("kubectl config view --raw --output json",
 
         clusterKey = context.context.cluster
         userKey    = context.context.user
+
+        if (clusterKey == "" || userKey == "") {
+          continue
+        }
 
         userData = findObjectByKey(kubeConfig.users, 'name' == userKey)
         var apiToken = userData['user']['auth-provider']['config']['access-token']
@@ -50,7 +59,7 @@ exec("kubectl config view --raw --output json",
         })
       }
 
-      console.log('module.exports = ' + JSON.stringify(config, null, 2))
+      console.log('export default ' + JSON.stringify(config, null, 2))
    });
 
 

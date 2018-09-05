@@ -1,4 +1,4 @@
-PATH  := ../node_modules/.bin:$(PATH)
+PATH  := ./node_modules/.bin:$(PATH)
 SHELL := env PATH=$(PATH) /bin/bash
 
 .DEFAULT_GOAL := serve

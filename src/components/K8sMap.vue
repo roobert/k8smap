@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import { contexts as k8sContexts } from '../../conf/config'
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -56,6 +55,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import K8sMapNode from './K8sMapNode.vue'
 import K8sMapContextDropDown from './K8sMapContextDropDown.vue'
 import K8sMapContextDropDownItem from './K8sMapContextDropDownItem.vue'
+
+import { default as config } from '../../conf/config'
 
 export default {
   name: 'k8s-map',
@@ -83,7 +84,7 @@ export default {
   },
   data () {
     return {
-      contexts: k8sContexts,
+      contexts: config.contexts,
       errored: false,
       loading: true,
       namespaces: null,
