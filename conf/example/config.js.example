@@ -1,0 +1,14 @@
+module.exports = {
+  "contexts": [
+    {
+      "project": "",
+      "region": "",
+      "zone": "",
+      "cluster": "",
+      "api": {
+        "server": "",
+        "token": ""
+      }
+    }
+  ]
+}

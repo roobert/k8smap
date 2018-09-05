@@ -12,7 +12,3 @@ server {
   proxy_redirect off;
   error_log /var/log/nginx/error.log notice;
   rewrite_log on;
-
-  # NOTE: populated by generate-nginx-config.js
-  @@location_blocks
-}
