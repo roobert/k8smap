@@ -1,4 +1,4 @@
-#!/home/rw/opt/node/bin/node --experimental-modules
+#!/usr/bin/env node --experimental-modules
 
 //let config = require('../config.js')
 import config from '../config'
