@@ -10,7 +10,7 @@ try {
   config = { contexts: [] }
 
   for (const [index, context] of Object.entries(kubeConfig["contexts"])) {
-    contextData = context.name.split('_')
+    contextData = context.context.cluster.split('_')
 
     if (contextData.length != 4) {
       continue
