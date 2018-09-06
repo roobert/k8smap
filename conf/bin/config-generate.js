@@ -39,9 +39,6 @@ try {
     } catch(err) {
       console.error("# ignoring context due to error fetching secret: " + err)
       continue
-      //if (err.code === 'ETIMEOUT') {
-      //  continue
-      //}
     }
 
     secrets = JSON.parse(secretsResult)
