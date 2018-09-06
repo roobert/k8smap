@@ -37,9 +37,11 @@ try {
       console.error('# generating config for: ' + context.name)
       secretsResult = execSync(secretsCommand, {timeout: 3000}).toString();
     } catch(err) {
-      if (err.code === 'ETIMEOUT') {
-        continue
-      }
+      console.error("# ignoring context due to error fetching secret: " + err)
+      continue
+      //if (err.code === 'ETIMEOUT') {
+      //  continue
+      //}
     }
 
     secrets = JSON.parse(secretsResult)
