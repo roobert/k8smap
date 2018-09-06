@@ -36,7 +36,7 @@
                 <td>
                   {{ context.cluster }}
                 </td>
-                <td>
+                <td class="map-button">
                   <!-- FIXME: onClick? -->
                   <a v-bind:href="projectPathLink(context.project, context.region, context.zone, context.cluster)">
                     <b-button variant="primary" size="sm">Map</b-button>
@@ -97,5 +97,9 @@ body {
 
 #context-picker {
   padding-top: 20px;
+}
+
+.map-button {
+  text-align: right;
 }
 </style>
