@@ -1,65 +1,73 @@
 #!/usr/bin/env node
 
-var exec = require('child_process').exec;
-var kubeConfig;
+var execSync = require('child_process').execSync;
 
-function findObjectByKey(array, key, value) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i][key] === value) {
-            return array[i];
-        }
+try {
+  configResult = execSync("kubectl config view --raw --output json").toString();
+
+  kubeConfig = JSON.parse(configResult);
+
+  config = { contexts: [] }
+
+  for (const [index, context] of Object.entries(kubeConfig["contexts"])) {
+    contextData = context.name.split('_')
+
+    if (contextData.length != 4) {
+      continue
     }
-    return null;
+
+    project     = contextData[1]
+    region      = contextData[2].replace(/-.$/, "")
+    zone        = contextData[2].split('-')[2]
+    cluster     = contextData[3]
+
+    clusterKey = context.context.cluster
+    userKey    = context.context.user
+
+    if (clusterKey == "" || userKey == "") {
+      continue
+    }
+
+    secretsCommand = 'kubectl get secret --output json --cluster ' + context.name
+
+    var secretsResult
+
+    try {
+      console.error('# generating config for: ' + context.name)
+      secretsResult = execSync(secretsCommand, {timeout: 3000}).toString();
+    } catch(err) {
+      if (err.code === 'ETIMEOUT') {
+        continue
+      }
+    }
+
+    secrets = JSON.parse(secretsResult)
+
+    secret = secrets.items.find(function (obj) { return /^default.*/.test(obj.metadata.name) });
+    apiToken = secret.data.token
+
+    clusterData = kubeConfig.clusters.find(function (obj) { return obj.name === clusterKey });
+    apiAddress = clusterData['cluster']['server']
+
+    //userData = findObjectByKey(kubeConfig.users, 'name' == userKey)
+    //var apiToken = userData['user']['auth-provider']['config']['access-token']
+    clusterConfig = {
+      project: project,
+      region: region,
+      zone: zone,
+      cluster: cluster,
+      api: {
+        server: apiAddress,
+        token: apiToken
+      }
+    }
+
+    //console.log(JSON.stringify(clusterConfig, null, 2))
+
+    config['contexts'].push(clusterConfig)
+
+  }
+  console.log(JSON.stringify(config, null, 2))
+} catch (error) {
+  console.log(error)
 }
-
-exec("kubectl config view --raw --output json",
-   function (error, stdout, stderr) {
-      if (error !== null) {
-          console.log(stderr);
-          console.log('exec error: ' + error);
-      }
-
-      kubeConfig = JSON.parse(stdout);
-      config = { contexts: [] }
-
-      for (const [index, context] of Object.entries(kubeConfig["contexts"])) {
-        contextData = context.name.split('_');
-
-        if (contextData.length != 4) {
-          continue
-        }
-
-        project     = contextData[1]
-        region      = contextData[2].replace(/-.$/, "")
-        zone        = contextData[2].split('-')[2]
-        cluster     = contextData[3]
-
-        clusterKey = context.context.cluster
-        userKey    = context.context.user
-
-        if (clusterKey == "" || userKey == "") {
-          continue
-        }
-
-        userData = findObjectByKey(kubeConfig.users, 'name' == userKey)
-        var apiToken = userData['user']['auth-provider']['config']['access-token']
-
-        clusterData = findObjectByKey(kubeConfig.clusters, 'name' == clusterKey)
-        var apiAddress = clusterData['cluster']['server']
-
-        config['contexts'].push({
-          project: project,
-          region: region,
-          zone: zone,
-          cluster: cluster,
-          api: {
-            server: apiAddress,
-            token: apiToken
-          }
-        })
-      }
-
-      console.log('export default ' + JSON.stringify(config, null, 2))
-   });
-
-
