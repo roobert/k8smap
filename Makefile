@@ -9,7 +9,7 @@ install:
 
 configure:
 	@cd conf \
-	&& ./bin/config-generate.js > config.js \
+	&& ./bin/config-generate.js > config.mjs \
 	&& ./bin/nginx-config-generate.js > nginx.conf
 
 build:
