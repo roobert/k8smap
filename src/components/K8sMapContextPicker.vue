@@ -1,11 +1,15 @@
 <template>
   <div id="k8s-map-context-picker" class="container-fluid">
+    <div class="row header">
+      <div class="col-sm logo">
+        <a href="/">
+          <img src="../assets/logo.png" width="40px">
+        </a>
+      </div>
+    </div>
     <div class="row">
       <div class="col">
-        <!--div class="mx-auto w-75 p-3 text-center">
-          <b-table striped hover @row-clicked="myRowClickHandler" :items="contextItems"></b-table>
-        </div-->
-        <div class="mx-auto w-75 p-3 text-center">
+        <div id="context-picker">
           <table class="table table-hover">
             <thead>
               <th scope="col">project</th>
@@ -35,7 +39,7 @@
                 <td>
                   <!-- FIXME: onClick? -->
                   <a v-bind:href="projectPathLink(context.project, context.region, context.zone, context.cluster)">
-                    <button>Map</button>
+                    <b-button variant="primary" size="sm">Map</b-button>
                   </a>
                 </td>
               </tr>
@@ -87,4 +91,11 @@ export default {
 </script>
 
 <style>
+body {
+  background: #eee ! important
+}
+
+#context-picker {
+  padding-top: 20px;
+}
 </style>

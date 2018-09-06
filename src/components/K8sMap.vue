@@ -1,49 +1,57 @@
 <template>
   <div id="k8s-map">
-    <section v-if="errored">
-      <p>failure fetching data from kubernetes API</p>
-      {{ contextPathPrettyCurrent }}
-    </section>
-    <section v-else>
-      <div v-if="loading">Loading..</div>
-      <div v-else>
-        <div class="container-fluid">
-          <div class="row header">
-            <div class="col-sm context">
-              <b-dropdown
-                id="context-picker"
-                v-bind:text="contextPathPretty(project, region, zone, cluster)"
-                class="m-md-2"
-              >
-                <b-dropdown-item
-                  v-for="dropdownItem in dropdownItems"
-                  v-bind:key="dropdownItem.link"
-                  v-bind:dropdownItem="dropdownItem"
-                  v-bind:href="dropdownItem.link"
-                >
-                  {{ dropdownItem.pretty }}
-                </b-dropdown-item>
-              </b-dropdown>
-            </div>
-
-            <div class="col-sm logo">
-              <a href="/">
-                <img src="../assets/logo.png" width="40px">
-              </a>
-            </div>
-          </div>
-          <div class="row">
-            <k8s-map-node
-              v-for="node in nodes.data.items"
-              v-bind:key="node.uid"
-              v-bind:node="node"
-              v-bind:pods="pods"
+    <div class="container-fluid">
+      <div class="row header">
+        <div class="col-sm context">
+          <b-dropdown
+            id="context-picker-drop-down"
+            v-bind:text="contextPathPretty(project, region, zone, cluster)"
+            class="m-md-2"
+          >
+            <b-dropdown-item
+              v-for="dropdownItem in dropdownItems"
+              v-bind:key="dropdownItem.link"
+              v-bind:dropdownItem="dropdownItem"
+              v-bind:href="dropdownItem.link"
             >
-            </k8s-map-node>
-          </div>
+              {{ dropdownItem.pretty }}
+            </b-dropdown-item>
+          </b-dropdown>
+        </div>
+        <div class="col-sm logo">
+          <a href="/">
+            <img src="../assets/logo.png" width="40px">
+          </a>
+        </div>
+      </div>
+    <section v-if="errored">
+      <div class="row header">
+        <div class="col-sm context">
+          <b-alert show variant="danger">Failed to fetch data form Kubernetes API</b-alert>
         </div>
       </div>
     </section>
+    <section v-else>
+      <section v-if="loading">
+        <div class="row">
+          <div class="col-sm context">
+            <b-alert show variant="primary">Loading..</b-alert>
+          </div>
+        </div>
+      </section>
+      <section v-else>
+        <div class="row">
+          <k8s-map-node
+            v-for="node in nodes.data.items"
+            v-bind:key="node.uid"
+            v-bind:node="node"
+            v-bind:pods="pods"
+          >
+          </k8s-map-node>
+        </div>
+      </section>
+    </section>
+    </div>
   </div>
 </template>
 
@@ -164,7 +172,7 @@ export default {
 }
 
 .header {
-  padding-top: 10px;
+  padding-top: 50px;
 
 }
 
