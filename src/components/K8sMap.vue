@@ -14,11 +14,11 @@
                 id="context-picker"
                 v-bind:text="contextPathPretty(project, region, zone, cluster)"
                 class="m-md-2"
-                v-for="dropdownItem in dropdownItems"
-                v-bind:key="dropdownItem.link"
-                v-bind:dropdownItem="dropdownItem"
               >
                 <b-dropdown-item
+                  v-for="dropdownItem in dropdownItems"
+                  v-bind:key="dropdownItem.link"
+                  v-bind:dropdownItem="dropdownItem"
                   v-bind:href="dropdownItem.link"
                 >
                   {{ dropdownItem.pretty }}
@@ -56,7 +56,7 @@ import K8sMapNode from './K8sMapNode.vue'
 import K8sMapContextDropDown from './K8sMapContextDropDown.vue'
 import K8sMapContextDropDownItem from './K8sMapContextDropDownItem.vue'
 
-import { default as config } from '../../conf/config'
+import config from '../../conf/config.mjs'
 
 export default {
   name: 'k8s-map',

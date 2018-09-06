@@ -49,7 +49,7 @@
 
 <script>
 
-import { default as config } from '../../conf/config'
+import { default as config } from '../../conf/config.mjs'
 
 export default {
   name: 'k8s-map-context-picker',
