@@ -29,7 +29,7 @@ try {
       continue
     }
 
-    secretsCommand = 'kubectl get secret --output json --cluster ' + context.name
+    secretsCommand = 'kubectl get secret --output json --cluster ' + clusterKey
 
     var secretsResult
 
