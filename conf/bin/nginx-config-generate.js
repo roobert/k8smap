@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
+import context from '../config'
+
 var exec = require('child_process').exec;
-let config = require('../config.js')
 
 exec('cat template/nginx.conf.header',
   function (error, stdout, stderr) {

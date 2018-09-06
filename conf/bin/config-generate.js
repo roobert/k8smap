@@ -16,6 +16,7 @@ try {
       continue
     }
 
+    name        = context.name
     project     = contextData[1]
     region      = contextData[2].replace(/-.$/, "")
     zone        = contextData[2].split('-')[2]
@@ -52,10 +53,11 @@ try {
     //userData = findObjectByKey(kubeConfig.users, 'name' == userKey)
     //var apiToken = userData['user']['auth-provider']['config']['access-token']
     clusterConfig = {
-      project: project,
-      region: region,
-      zone: zone,
-      cluster: cluster,
+      name,
+      project,
+      region,
+      zone,
+      cluster,
       api: {
         server: apiAddress,
         token: apiToken
@@ -67,7 +69,7 @@ try {
     config['contexts'].push(clusterConfig)
 
   }
-  console.log(JSON.stringify(config, null, 2))
+  console.log('export default ' + JSON.stringify(config, null, 2))
 } catch (error) {
   console.log(error)
 }
