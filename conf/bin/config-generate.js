@@ -45,7 +45,7 @@ try {
     secrets = JSON.parse(secretsResult)
 
     secret = secrets.items.find(function (obj) { return /^default.*/.test(obj.metadata.name) });
-    apiToken = secret.data.token
+    apiToken = new Buffer(secret.data.token, 'base64').toString()
 
     clusterData = kubeConfig.clusters.find(function (obj) { return obj.name === clusterKey });
     apiAddress = clusterData['cluster']['server']
