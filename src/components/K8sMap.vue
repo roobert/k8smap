@@ -19,15 +19,18 @@
           </b-dropdown>
         </div>
         <div class="col-sm logo">
-          <a href="/">
-            <img src="../assets/logo.png" width="40px">
-          </a>
+          <b-link href="/">
+            <img :src="require('../assets/logo.png')" width="40px">
+          </b-link>
         </div>
       </div>
     <section v-if="errored">
       <div class="row header">
         <div class="col-sm context">
-          <b-alert show variant="danger">Failed to fetch data form Kubernetes API</b-alert>
+          <b-alert show variant="danger">
+            <p>Failed to fetch data form Kubernetes API - {{ error.response.status }}</p>
+            <pre>{{ error.response.data | pp }}</pre>
+          </b-alert>
         </div>
       </div>
     </section>
@@ -94,6 +97,7 @@ export default {
     return {
       contexts: config.contexts,
       errored: false,
+      error: null,
       loading: true,
       namespaces: null,
       nodes: null,
@@ -144,7 +148,15 @@ export default {
   },
   watch: {
     '$route'() {
-      // FIXME: does this watcher update props on route change, or do we need to manually update the properties?
+      //  from.params.project = to.params.project
+      //  from.params.region = to.params.region
+      //  from.params.zone = to.params.zone
+      //  from.params.cluster = to.params.cluster
+    }
+  },
+  filters: {
+      pp: function(value) {
+      return JSON.stringify(value, null, 2);
     }
   },
   mounted () {
@@ -160,7 +172,7 @@ export default {
       this.pods = podsResponse,
       this.services = servicesResponse
     }))
-    .catch(() => { this.errored = true })
+    .catch((error) => { this.errored = true, this.error = error })
     .finally(() => this.loading = false)
     }
 }

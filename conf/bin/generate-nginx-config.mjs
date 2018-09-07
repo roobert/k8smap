@@ -4,7 +4,9 @@
 import config from '../config'
 import { execSync } from 'child_process'
 
-var nginxHeader = execSync('cat template/nginx.conf.header').toString()
+var headerFile=(process.argv[2])
+
+var nginxHeader = execSync('cat ' + headerFile).toString()
 
 console.log(nginxHeader)
 

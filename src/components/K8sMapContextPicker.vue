@@ -2,9 +2,9 @@
   <div id="k8s-map-context-picker" class="container-fluid">
     <div class="row header">
       <div class="col-sm logo">
-        <a href="/">
-          <img src="../assets/logo.png" width="40px">
-        </a>
+        <b-link to="/">
+          <img :src="require('../assets/logo.png')" width="40px">
+        </b-link>
       </div>
     </div>
     <div class="row">
@@ -38,9 +38,13 @@
                 </td>
                 <td class="map-button">
                   <!-- FIXME: onClick? -->
-                  <a v-bind:href="projectPathLink(context.project, context.region, context.zone, context.cluster)">
-                    <b-button variant="primary" size="sm">Map</b-button>
-                  </a>
+                  <b-button
+                    v-bind:to="projectPathLink(context.project, context.region, context.zone, context.cluster)"
+                    variant="primary"
+                    size="sm"
+                  >
+                  Map
+                  </b-button>
                 </td>
               </tr>
             </tbody>

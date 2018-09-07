@@ -1,5 +1,4 @@
-config.mjs
-nginx.conf
+conf/tmp/*
 
 .DS_Store
 node_modules

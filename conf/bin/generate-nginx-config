@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# NOTE /usr/bin/env does not support passing flags
+exec node --experimental-modules bin/generate-nginx-config.mjs "$@"
