@@ -14,14 +14,14 @@ serve:
 configure-dev:
 	@cd conf \
 	&& ./bin/generate-vue-config > tmp/config.mjs \
-	&& ./bin/generate-nginx-config template/nginx.conf.header.dev > tmp/nginx.conf.dev \
-	&& sudo cp nginx.conf.dev /etc/nginx/sites.enable/k8smap \
+	&& ./bin/generate-nginx-config template/nginx.conf.header.node > tmp/nginx.conf.node \
+	&& sudo cp nginx.conf.node /etc/nginx/sites.enable/k8smap \
 	&& sudo service nginx reload
 
 configure-prod:
 	@cd conf \
 	&& ./bin/generate-vue-config > tmp/config.mjs \
-	&& ./bin/generate-nginx-config template/nginx.conf.header.prod > tmp/nginx.conf.prod
+	&& ./bin/generate-nginx-config template/nginx.conf.header.docker > tmp/nginx.conf.docker
 
 build-dev:
 	docker build -f Dockerfile.dev -t k8smap .
