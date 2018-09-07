@@ -11,20 +11,35 @@ serve:
 	@cd src \
 	&& vue serve
 
-configure-dev:
+# node build targets
+
+configure-node:
 	@cd conf \
 	&& ./bin/generate-vue-config > tmp/config.mjs \
 	&& ./bin/generate-nginx-config template/nginx.conf.header.node > tmp/nginx.conf.node \
+
+install-node:
+	@cd conf \
 	&& sudo cp nginx.conf.node /etc/nginx/sites.enable/k8smap \
 	&& sudo service nginx reload
 
-configure-prod:
+# docker build targets
+
+configure-docker:
 	@cd conf \
 	&& ./bin/generate-vue-config > tmp/config.mjs \
 	&& ./bin/generate-nginx-config template/nginx.conf.header.docker > tmp/nginx.conf.docker
 
-build-dev:
+# FIXME: update tags
+
+build-docker-dev:
 	docker build -f Dockerfile.dev -t k8smap .
 
-run:
+build-docker-prod:
+	docker build -f Dockerfile.prod -t k8smap .
+
+run-dev:
+	docker run -i -t --rm -p=8888:80 --name=k8smap k8smap
+
+run-prod:
 	docker run -i -t --rm -p=8888:80 --name=k8smap k8smap
