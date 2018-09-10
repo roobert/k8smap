@@ -1,1 +1,4 @@
-generate-vue-config.mjs
+#!/usr/bin/env bash
+
+# NOTE /usr/bin/env does not support passing flags
+exec node --experimental-modules bin/generate-vue-config.mjs "$@"

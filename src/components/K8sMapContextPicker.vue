@@ -57,7 +57,7 @@
 
 <script>
 
-import { default as config } from '../../conf/config.mjs'
+import { default as config } from '../../conf/config.vue.mjs'
 
 export default {
   name: 'k8s-map-context-picker',

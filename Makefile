@@ -6,29 +6,29 @@ SHELL := env PATH=$(PATH) /bin/bash
 # node build targets
 
 node-depends:
-	npm install
-	sudo npm install -g @vue/cli-service-global
+	npm install \
+	  && sudo npm install -g @vue/cli-service-global
 
 node-configure:
 	@cd conf \
-	&& ./bin/generate-vue-config > tmp/config.mjs \
-	&& ./bin/generate-nginx-config template/nginx.conf.header.node > tmp/nginx.conf.node \
+		&& ./bin/generate-vue-config > tmp/config.common.mjs \
+		&& ./bin/generate-nginx-config template/nginx.conf.header.node > tmp/nginx.conf.node \
 
 node-install:
 	@cd conf \
-	&& sudo cp nginx.conf.node /etc/nginx/sites.enable/k8smap \
-	&& sudo service nginx reload
+		&& sudo cp nginx.conf.node /etc/nginx/sites.enable/k8smap \
+		&& sudo service nginx reload
 
 node-run:
 	@cd src \
-	&& vue serve
+		&& vue serve
 
 # docker build targets
 
 docker-configure:
 	@cd conf \
-	&& ./bin/generate-vue-config > tmp/config.mjs \
-	&& ./bin/generate-nginx-config template/nginx.conf.header.docker > tmp/nginx.conf.docker
+		&& ./bin/generate-vue-config > tmp/config.vue.mjs \
+		&& ./bin/generate-nginx-config template/nginx.conf.header.docker > tmp/nginx.conf.docker
 
 # FIXME: update tags
 
@@ -43,3 +43,6 @@ docker-dev-run:
 
 docker-k8s-run:
 	docker run -i -t --rm -p=8888:80 --name=k8smap k8smap
+
+docker-shell:
+  docker exec -it k8smap  /bin/sh

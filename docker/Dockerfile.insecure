@@ -8,7 +8,6 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-
 FROM nginx:1.13.12-alpine as k8smap-production-stage
 COPY --from=k8smap-build-stage /app/dist /usr/share/nginx/html
 

@@ -67,7 +67,7 @@ import K8sMapNode from './K8sMapNode.vue'
 import K8sMapContextDropDown from './K8sMapContextDropDown.vue'
 import K8sMapContextDropDownItem from './K8sMapContextDropDownItem.vue'
 
-import config from '../../conf/config.mjs'
+import config from '../../conf/config.vue.mjs'
 
 export default {
   name: 'k8s-map',
