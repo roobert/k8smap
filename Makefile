@@ -12,10 +12,11 @@ make configure:
 
 node-depends:
 	npm install \
-	  && sudo npm install -g @vue/cli-service-global
+	  && sudo env "PATH=$$PATH" npm install -g @vue/cli @vue/cli-service-global
 
 node-configure:
-	./bin/generate-nginx-config conf/template/nginx.conf.header.node > conf/nginx.conf.node
+	./bin/generate-vue-config > conf/config.vue.mjs \
+		&& ./bin/generate-nginx-config conf/template/nginx.conf.header.node > conf/nginx.conf.node
 
 node-install:
 	sudo cp conf/nginx.conf.node /etc/nginx/sites.enable/k8smap \

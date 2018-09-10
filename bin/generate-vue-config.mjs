@@ -1,6 +1,6 @@
 #!/usr/bin/env node --experimental-modules
 
-import config from '../tmp/config.common.mjs'
+import config from '../conf/config.common.mjs'
 import { execSync } from 'child_process'
 
 var vueConfig = { "contexts": [] }
@@ -15,4 +15,4 @@ for (const [index, context] of Object.entries(config.contexts)) {
   })
 }
 
-console.log(vueConfig)
+console.log("export default " + JSON.stringify(vueConfig, null, 2))

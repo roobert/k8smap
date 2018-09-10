@@ -1,7 +1,7 @@
 #!/usr/bin/env node --experimental-modules
 
 //let config = require('../config.js')
-import config from '../tmp/config.common.mjs'
+import config from '../conf/config.common.mjs'
 import { execSync } from 'child_process'
 
 var headerFile=(process.argv[2])
