@@ -11,6 +11,7 @@ var nginxHeader = execSync('cat ' + headerFile).toString()
 console.log(nginxHeader)
 
 for (const [index, context] of Object.entries(config.contexts)) {
+  console.error("# generating config for " + context.name)
   var nginxFragment = `
     location ~ /k8s/${context.project}/${context.region}/${context.zone}/${context.cluster}(?<path>.*) {
        proxy_set_header Authorization "Bearer ${context.api.token}";
