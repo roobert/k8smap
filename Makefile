@@ -36,7 +36,9 @@ docker-build:
 	docker build -t k8smap .
 
 docker-run:
-	docker run -i -t --volume conf/nginx.conf.docker:/etc/nginx/conf.d/k8smap.conf --rm -p=8888:80 --name=k8smap k8smap
+	docker run -i -t --volume ${PWD}/conf/config.vue.mjs /usr/share/nginx/html/config.vue.mjs \
+		--volume ${PWD}/conf/nginx.conf.docker:/etc/nginx/conf.d/k8smap.conf \
+		--rm -p=8888:80 --name=k8smap k8smap
 
 docker-shell:
 	docker exec -it k8smap /bin/sh
