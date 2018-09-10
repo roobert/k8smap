@@ -30,7 +30,7 @@ node-run:
 
 docker-configure:
 	./bin/generate-vue-config > conf/config.vue.mjs \
-	./bin/generate-nginx-config template/nginx.conf.header.docker > conf/nginx.conf.docker
+		&& ./bin/generate-nginx-config conf/template/nginx.conf.header.docker > conf/nginx.conf.docker
 
 docker-build:
 	docker build -t k8smap .
