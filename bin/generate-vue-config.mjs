@@ -16,4 +16,4 @@ for (const [index, context] of Object.entries(config.contexts)) {
   })
 }
 
-console.log("export default " + JSON.stringify(vueConfig, null, 2))
+console.log(JSON.stringify(vueConfig, null, 2))

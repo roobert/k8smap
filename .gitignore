@@ -1,4 +1,5 @@
 config.*.mjs
+config.*.json
 nginx.conf.*
 
 .DS_Store

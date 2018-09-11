@@ -67,8 +67,6 @@ import K8sMapNode from './K8sMapNode.vue'
 import K8sMapContextDropDown from './K8sMapContextDropDown.vue'
 import K8sMapContextDropDownItem from './K8sMapContextDropDownItem.vue'
 
-import config from '../../conf/config.vue.mjs'
-
 export default {
   name: 'k8s-map',
   props: [
@@ -95,7 +93,7 @@ export default {
   },
   data () {
     return {
-      contexts: config.contexts,
+      contexts: [],
       errored: false,
       error: null,
       loading: true,
@@ -161,12 +159,14 @@ export default {
   },
   mounted () {
     axios.all([
+      axios.get('/config.vue.json'),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/namespaces'),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/nodes'),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/pods'),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/services'),
     ])
-    .then(axios.spread((namespacesResponse, nodesResponse, podsResponse, servicesResponse) => {
+    .then(axios.spread((configResponse, namespacesResponse, nodesResponse, podsResponse, servicesResponse) => {
+      this.contexts = configResponse.data.contexts,
       this.namespaces = namespacesResponse,
       this.nodes = nodesResponse,
       this.pods = podsResponse,

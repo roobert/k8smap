@@ -56,14 +56,13 @@
 </template>
 
 <script>
-
-import { default as config } from '../../conf/config.vue.mjs'
+import axios from 'axios'
 
 export default {
   name: 'k8s-map-context-picker',
   data () {
     return {
-      contexts: config.contexts
+      contexts: [],
     }
   },
   methods: {
@@ -90,6 +89,12 @@ export default {
       }
       return collection;
     }
+  },
+  mounted () {
+    axios.get('/config.vue.json')
+    .then((configResponse) => { this.contexts = configResponse.data.contexts })
+    .catch((error) => { this.errored = true, this.error = error })
+    .finally(() => this.loading = false)
   }
 }
 </script>

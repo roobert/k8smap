@@ -15,7 +15,7 @@ node-depends:
 	  && sudo env "PATH=$$PATH" npm install -g @vue/cli @vue/cli-service-global
 
 node-configure:
-	./bin/generate-vue-config > conf/config.vue.mjs \
+	./bin/generate-vue-config > conf/config.vue.json \
 		&& ./bin/generate-nginx-config conf/template/nginx.conf.header.node > conf/nginx.conf.node
 
 node-install:
@@ -29,7 +29,7 @@ node-run:
 # docker build targets
 
 docker-configure:
-	./bin/generate-vue-config > conf/config.vue.mjs \
+	./bin/generate-vue-config > conf/config.vue.json \
 		&& ./bin/generate-nginx-config conf/template/nginx.conf.header.docker > conf/nginx.conf.docker
 
 docker-build:
@@ -37,10 +37,11 @@ docker-build:
 
 docker-run:
 	docker run -i -t \
-		--volume ${PWD}/conf/config.vue.mjs:/usr/share/nginx/html/config.vue.mjs \
+		--volume ${PWD}/conf/config.vue.json:/usr/share/nginx/html/config.vue.json \
 		--volume ${PWD}/conf/nginx.conf.docker:/etc/nginx/conf.d/k8smap.conf \
 		--rm -p=8888:80 \
 		--name=k8smap k8smap
+
 
 docker-shell:
 	docker exec -it k8smap /bin/sh

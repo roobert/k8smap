@@ -5,8 +5,7 @@ RUN npm install
 COPY . .
 COPY package*.json ./
 
-RUN echo 'export default { "contexts": [ {} ] }' > ./conf/config.vue.mjs \
-  && npm run build
+RUN npm run build
 
 FROM nginx:1.13.12-alpine as k8smap-production-stage
 COPY --from=k8smap-build-stage /app/dist /usr/share/nginx/html
