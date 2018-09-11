@@ -11,7 +11,8 @@ for (const [index, context] of Object.entries(config.contexts)) {
     name: context.name,
     project: context.project,
     region: context.region,
-    zone: context.zone
+    zone: context.zone,
+    cluster: context.cluster
   })
 }
 
