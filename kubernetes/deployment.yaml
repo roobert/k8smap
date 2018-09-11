@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: k8smap
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: k8smap
+    spec:
+      volumes:
+        - name: k8s-conf
+          secret:
+            secretName: k8s-conf
+      containers:
+        - name: k8smap
+          image: roobert/k8smap
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: k8s-conf
+              readOnly: true
+              mountPath: "/app/conf"
