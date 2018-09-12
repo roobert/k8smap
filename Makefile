@@ -12,7 +12,7 @@ make configure:
 
 node-depends:
 	npm install \
-	  && sudo env "PATH=$$PATH" npm install -g @vue/cli @vue/cli-service-global
+		&& sudo env "PATH=$$PATH" npm install -g @vue/cli @vue/cli-service-global
 
 node-configure:
 	./bin/generate-vue-config > conf/config.vue.json \
