@@ -3,16 +3,23 @@ SHELL := env PATH=$(PATH) /bin/bash
 
 .DEFAULT_GOAL := node-run
 
+# aliases
+
+configure-all: configure node-configure docker-configure
+
+node: configure node-configure node-install node-run
+
+docker: configure docker-configure docker-build docker-run
+
 # common build targets
 
-make configure:
+configure:
 	./bin/generate-common-config > conf/config.common.mjs
 
 # node build targets
 
 node-depends:
-	npm install \
-		&& sudo env "PATH=$$PATH" npm install -g @vue/cli @vue/cli-service-global
+	npm install
 
 node-configure:
 	./bin/generate-vue-config > conf/config.vue.json \
