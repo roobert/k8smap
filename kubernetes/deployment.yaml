@@ -13,6 +13,11 @@ spec:
         - name: k8s-conf
           secret:
             secretName: k8s-conf
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+              - key: config.vue.json
+                path: config.vue.json
       containers:
         - name: k8smap
           image: roobert/k8smap-vue
@@ -21,10 +26,8 @@ spec:
             - containerPort: 80
           volumeMounts:
             - name: k8s-conf
-              readOnly: true
-              mountPath: /usr/share/nginx/html/
+              mountPath: /usr/share/nginx/html/config.vue.json
               subPath: config.vue.json
             - name: k8s-conf
-              readOnly: true
-              mountPath: /etc/nginx/conf.d/
-              subPath: k8smap.conf
+              mountPath: /etc/nginx/conf.d/k8smap.conf
+              subPath: nginx.conf
