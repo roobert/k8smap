@@ -1,15 +1,12 @@
 module.exports = {
   configureWebpack: {
-    plugins: [
-      new RobPlugin = {
-          devServer: {
-            before: function(app) {
-              app.get('/test', function(req, res) {
-                res.json({ custom: 'response' });
-              });
-            }
-          }
-        }
-    ]
+    devServer: {
+      before: function(app) {
+        app.get('/test', function(req, res) {
+          console.log("hit test!");
+          res.json({ custom: 'response' });
+        });
+      }
+    }
   }
 };
