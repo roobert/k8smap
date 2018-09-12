@@ -15,11 +15,16 @@ spec:
             secretName: k8s-conf
       containers:
         - name: k8smap
-          image: roobert/k8smap
+          image: roobert/k8smap-vue
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
           volumeMounts:
             - name: k8s-conf
               readOnly: true
-              mountPath: "/app/conf"
+              mountPath: /usr/share/nginx/html/
+              subPath: config.vue.json
+            - name: k8s-conf
+              readOnly: true
+              mountPath: /etc/nginx/conf.d/
+              subPath: k8smap.conf
