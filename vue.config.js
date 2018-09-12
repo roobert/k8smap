@@ -2,9 +2,8 @@ module.exports = {
   configureWebpack: {
     devServer: {
       before: function(app) {
-        app.get('/test', function(req, res) {
-          console.log("hit test!");
-          res.json({ custom: 'response' });
+        app.get('/config.vue.json', function(req, res) {
+          res.json(require("./conf/config.vue.json"));
         });
       }
     }

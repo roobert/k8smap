@@ -19,12 +19,11 @@ node-configure:
 		&& ./bin/generate-nginx-config conf/template/nginx.conf.header.node > conf/nginx.conf.node
 
 node-install:
-	sudo cp conf/nginx.conf.node /etc/nginx/sites.enable/k8smap \
+	sudo cp conf/nginx.conf.node /etc/nginx/sites-enabled/k8smap \
 		&& sudo service nginx reload
 
 node-run:
-	@cd src \
-		&& vue serve
+	npm run serve
 
 # docker build targets
 
