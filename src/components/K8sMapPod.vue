@@ -1,5 +1,5 @@
 <template>
-  <div v-show="display.pods" class="pod border">
+  <div v-show="(display.pods && display.namespaces[pod.metadata.namespace])" class="pod border">
     <div class="title">{{ pod.metadata.name }}</div>
     <k8s-map-container
       v-for="container in pod.spec.containers"

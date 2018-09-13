@@ -44,26 +44,27 @@
       </section>
       <section v-else>
         <div class="filters row">
-          <div class=col>
-            <b-dropdown
-              id="context-picker-drop-down"
-              text="namespace"
+          <div class="namespaces col">
+            <b-button
+              variant="primary"
+              v-for="namespace in namespaces.data.items"
+              v-bind:key="namespace.metadata.name"
+              v-bind:namespace="namespace"
+              v-on:click="toggleDisplayNamespace(namespace.metadata.name)"
+              :pressed="!display.namespaces[namespace.metadata.name]"
             >
-            <!-- FIXME: this should be tick boxes / selectable -->
-              <b-dropdown-item>
-                all
-              </b-dropdown-item>
-            </b-dropdown>
+              {{ namespace.metadata.name }}
+            </b-button>
           </div>
         </div>
         <div class="filters row">
           <div class=col>
-            <b-button variant="primary" :pressed="!display.ingresses" v-on:click="toggleDisplay('ingresses')">ingresses</b-button> - 
-            <b-button variant="primary" :pressed="!display.services" v-on:click="toggleDisplay('services')">services</b-button> - 
-            <b-button variant="primary" :pressed="!display.deployments" v-on:click="toggleDisplay('deployments')">deployments</b-button> - 
-            <b-button variant="primary" :pressed="!display.nodes" v-on:click="toggleDisplay('nodes')">nodes</b-button> - 
-            <b-button variant="primary" :pressed="!display.pods" v-on:click="toggleDisplay('pods')">pods</b-button> - 
-            <b-button variant="primary" :pressed="!display.containers" v-on:click="toggleDisplay('containers')">containers</b-button>
+            <b-button variant="primary" :pressed="!display.ingresses"   v-on:click="toggleDisplay('ingresses')">ingresses</b-button>
+            <b-button variant="primary" :pressed="!display.services"    v-on:click="toggleDisplay('services')">services</b-button>
+            <b-button variant="primary" :pressed="!display.deployments" v-on:click="toggleDisplay('deployments')">deployments</b-button>
+            <b-button variant="primary" :pressed="!display.nodes"       v-on:click="toggleDisplay('nodes')">nodes</b-button>
+            <b-button variant="primary" :pressed="!display.pods"        v-on:click="toggleDisplay('pods')">pods</b-button>
+            <b-button variant="primary" :pressed="!display.containers"  v-on:click="toggleDisplay('containers')">containers</b-button>
           </div>
         </div>
         <div class="row">
@@ -116,6 +117,9 @@ export default {
     },
     toggleDisplay: function(type) {
       this.display[type] = !this.display[type]
+    },
+    toggleDisplayNamespace: function(namespace) {
+      this.display.namespaces[namespace] = !this.display.namespaces[namespace]
     }
   },
   data () {
@@ -131,7 +135,8 @@ export default {
       display: {
         nodes: true,
         pods: true,
-        containers: true
+        containers: true,
+        namespaces: {}
       }
     }
   },
@@ -174,7 +179,7 @@ export default {
         }
       }
       return collection
-    }
+    },
   },
   watch: {
     '$route'() {
@@ -182,6 +187,13 @@ export default {
       //  from.params.region = to.params.region
       //  from.params.zone = to.params.zone
       //  from.params.cluster = to.params.cluster
+    },
+    namespaces (newNamespaces) {
+      for (let namespace of newNamespaces.data.items) {
+        if (!this.display.namespaces.hasOwnProperty(namespace.metadata.name)) {
+          this.display.namespaces[namespace.metadata.name] = true
+        }
+      }
     }
   },
   filters: {
@@ -197,13 +209,21 @@ export default {
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/pods'),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/services'),
     ])
-    .then(axios.spread((configResponse, namespacesResponse, nodesResponse, podsResponse, servicesResponse) => {
-      this.contexts = configResponse.data.contexts,
-      this.namespaces = namespacesResponse,
-      this.nodes = nodesResponse,
-      this.pods = podsResponse,
-      this.services = servicesResponse
-    }))
+    .then(axios.spread(
+      (
+        configResponse,
+        namespacesResponse,
+        nodesResponse,
+        podsResponse,
+        servicesResponse
+      ) => {
+        this.contexts = configResponse.data.contexts,
+        this.nodes = nodesResponse,
+        this.pods = podsResponse,
+        this.services = servicesResponse,
+        this.namespaces = namespacesResponse
+      }
+    ))
     .catch((error) => { this.errored = true, this.error = error })
     .finally(() => this.loading = false)
     }
@@ -255,5 +275,9 @@ export default {
   background: #eee;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+.filters button {
+  margin-right: 10px;
 }
 </style>
