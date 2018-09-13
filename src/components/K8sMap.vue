@@ -56,15 +56,21 @@
               {{ namespace.metadata.name }}
             </b-button>
           </div>
+          <div class="col title">
+            namespaces
+          </div>
         </div>
         <div class="filters row">
-          <div class=col>
+          <div class="col">
             <b-button variant="primary" :pressed="!display.ingresses"   v-on:click="toggleDisplay('ingresses')">ingresses</b-button>
             <b-button variant="primary" :pressed="!display.services"    v-on:click="toggleDisplay('services')">services</b-button>
             <b-button variant="primary" :pressed="!display.deployments" v-on:click="toggleDisplay('deployments')">deployments</b-button>
             <b-button variant="primary" :pressed="!display.nodes"       v-on:click="toggleDisplay('nodes')">nodes</b-button>
             <b-button variant="primary" :pressed="!display.pods"        v-on:click="toggleDisplay('pods')">pods</b-button>
             <b-button variant="primary" :pressed="!display.containers"  v-on:click="toggleDisplay('containers')">containers</b-button>
+          </div>
+          <div class="col title">
+            resource types
           </div>
         </div>
         <div class="row">
@@ -279,5 +285,9 @@ export default {
 
 .filters button {
   margin-right: 10px;
+}
+
+.filters .title {
+  text-align: right;
 }
 </style>
