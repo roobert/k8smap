@@ -43,12 +43,36 @@
         </div>
       </section>
       <section v-else>
+        <div class="filters row">
+          <div class=col>
+            <b-dropdown
+              id="context-picker-drop-down"
+              text="namespace"
+            >
+            <!-- FIXME: this should be tick boxes / selectable -->
+              <b-dropdown-item>
+                all
+              </b-dropdown-item>
+            </b-dropdown>
+          </div>
+        </div>
+        <div class="filters row">
+          <div class=col>
+            <b-button variant="primary" :pressed="!display.ingresses" v-on:click="toggleDisplay('ingresses')">ingresses</b-button> - 
+            <b-button variant="primary" :pressed="!display.services" v-on:click="toggleDisplay('services')">services</b-button> - 
+            <b-button variant="primary" :pressed="!display.deployments" v-on:click="toggleDisplay('deployments')">deployments</b-button> - 
+            <b-button variant="primary" :pressed="!display.nodes" v-on:click="toggleDisplay('nodes')">nodes</b-button> - 
+            <b-button variant="primary" :pressed="!display.pods" v-on:click="toggleDisplay('pods')">pods</b-button> - 
+            <b-button variant="primary" :pressed="!display.containers" v-on:click="toggleDisplay('containers')">containers</b-button>
+          </div>
+        </div>
         <div class="row">
           <k8s-map-node
             v-for="node in nodes.data.items"
             v-bind:key="node.uid"
             v-bind:node="node"
             v-bind:pods="pods"
+            v-bind:display="display"
           >
           </k8s-map-node>
         </div>
@@ -90,6 +114,9 @@ export default {
     contextPath(project, region, zone, cluster) {
       return [project, region, zone, cluster].join('/')
     },
+    toggleDisplay: function(type) {
+      this.display[type] = !this.display[type]
+    }
   },
   data () {
     return {
@@ -100,7 +127,12 @@ export default {
       namespaces: null,
       nodes: null,
       pods: null,
-      services: null
+      services: null,
+      display: {
+        nodes: true,
+        pods: true,
+        containers: true
+      }
     }
   },
   computed: {
@@ -217,5 +249,11 @@ export default {
   background-color: white;
   color: #333333;
   margin-top: 10px;
+}
+
+.filters {
+  background: #eee;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 </style>
