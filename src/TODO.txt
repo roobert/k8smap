@@ -18,3 +18,33 @@ TODO
    * services
      * load balancers
  * clicking on stuff takes you to k8s ui / logs, etc?
+
+use cases:
+ * share information (via urls)
+ * display state (needs display state and filtering)
+ * compare side-by-side data (requires some way to compare metadata (metadata window?))
+ * show relations between resource types (relies on filtering and having more types (ingress/service/deployments))
+
+queries should be copyable once on a page (base64 enc. short link) then processed as params to K8sMap component to allow re-visiting
+
+toggleable filters:
+ * view/hide deployments
+ * view/hide ingresses
+ * view/hide services
+
+ * view/hide nodes (all)
+ * view/hide pods (partial)
+ * view/hide containers (partial)
+
+ * view/hide container metadata
+ * view/hide pod metadata
+ * view/hide node metadata
+
+filters:
+ * filter by namespace (default to All)
+ * filter by node
+ * filter by app
+ * filter by state
+
+each component should have individually toggleable metadata
+each component should have coloured dot to display state
