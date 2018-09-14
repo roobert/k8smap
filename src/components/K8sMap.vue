@@ -44,8 +44,18 @@
       </section>
       <section v-else>
         <div class="filters row">
+          <div class="col">
+            <b-button size="sm" variant="success" :pressed="!display.danger" v-on:click="toggleDisplay('danger')">ok</b-button>
+            <b-button size="sm" variant="danger" :pressed="!display.success" v-on:click="toggleDisplay('success')">failure</b-button>
+          </div>
+          <div class="col-2 title">
+            resource state
+          </div>
+        </div>
+        <div class="filters row">
           <div class="namespaces col">
             <b-button
+              size="sm"
               variant="primary"
               v-for="namespace in namespaces.data.items"
               v-bind:key="namespace.metadata.name"
@@ -56,20 +66,20 @@
               {{ namespace.metadata.name }}
             </b-button>
           </div>
-          <div class="col title">
+          <div class="col-2 title">
             namespaces
           </div>
         </div>
         <div class="filters row">
           <div class="col">
-            <b-button variant="primary" :pressed="!display.ingresses"   v-on:click="toggleDisplay('ingresses')">ingresses</b-button>
-            <b-button variant="primary" :pressed="!display.services"    v-on:click="toggleDisplay('services')">services</b-button>
-            <b-button variant="primary" :pressed="!display.deployments" v-on:click="toggleDisplay('deployments')">deployments</b-button>
-            <b-button variant="primary" :pressed="!display.nodes"       v-on:click="toggleDisplay('nodes')">nodes</b-button>
-            <b-button variant="primary" :pressed="!display.pods"        v-on:click="toggleDisplay('pods')">pods</b-button>
-            <b-button variant="primary" :pressed="!display.containers"  v-on:click="toggleDisplay('containers')">containers</b-button>
+            <b-button size="sm" variant="primary" :pressed="!display.ingresses"   v-on:click="toggleDisplay('ingresses')">ingresses</b-button>
+            <b-button size="sm" variant="primary" :pressed="!display.services"    v-on:click="toggleDisplay('services')">services</b-button>
+            <b-button size="sm" variant="primary" :pressed="!display.deployments" v-on:click="toggleDisplay('deployments')">deployments</b-button>
+            <b-button size="sm" variant="primary" :pressed="!display.nodes"       v-on:click="toggleDisplay('nodes')">nodes</b-button>
+            <b-button size="sm" variant="primary" :pressed="!display.pods"        v-on:click="toggleDisplay('pods')">pods</b-button>
+            <b-button size="sm" variant="primary" :pressed="!display.containers"  v-on:click="toggleDisplay('containers')">containers</b-button>
           </div>
-          <div class="col title">
+          <div class="col-2 title">
             resource types
           </div>
         </div>
