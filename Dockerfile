@@ -7,7 +7,7 @@ COPY package*.json ./
 
 RUN npm run build
 
-FROM nginx:1.13.12-alpine as k8smap-production-stage
+FROM nginx:1.13.12-alpine as k8smap-combine-stage
 COPY --from=k8smap-build-stage /app/dist /usr/share/nginx/html
 
 # conf.d is used as mount point but overwrite this file anyway
