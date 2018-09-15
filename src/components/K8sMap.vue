@@ -29,7 +29,7 @@
         <div class="col-sm context">
           <b-alert show variant="danger">
             <p>Failed to fetch data form Kubernetes API - {{ error.response.status }}</p>
-            <pre>{{ error.response.data | pp }}</pre>
+            <pre>{{ error.response.data }}</pre>
           </b-alert>
         </div>
       </div>
@@ -45,8 +45,8 @@
       <section v-else>
         <div class="filters row">
           <div class="col">
-            <b-button size="sm" variant="success" :pressed="!display.danger" v-on:click="toggleDisplay('danger')">ok</b-button>
-            <b-button size="sm" variant="danger" :pressed="!display.success" v-on:click="toggleDisplay('success')">failure</b-button>
+            <b-button size="sm" variant="success" :pressed="!display.success" class="ok" v-on:click="toggleDisplay('success')">ok</b-button>
+            <b-button size="sm" variant="danger" :pressed="!display.danger" class="failure" v-on:click="toggleDisplay('danger')">failure</b-button>
           </div>
           <div class="col-2 title">
             resource state
@@ -149,6 +149,11 @@ export default {
       pods: null,
       services: null,
       display: {
+        success: true,
+        danger: true,
+        ingresses: false,
+        services: false,
+        deployments: false,
         nodes: true,
         pods: true,
         containers: true,
@@ -203,13 +208,6 @@ export default {
       //  from.params.region = to.params.region
       //  from.params.zone = to.params.zone
       //  from.params.cluster = to.params.cluster
-    },
-    namespaces (newNamespaces) {
-      for (let namespace of newNamespaces.data.items) {
-        if (!this.display.namespaces.hasOwnProperty(namespace.metadata.name)) {
-          this.display.namespaces[namespace.metadata.name] = true
-        }
-      }
     }
   },
   filters: {
@@ -238,10 +236,21 @@ export default {
         this.pods = podsResponse,
         this.services = servicesResponse,
         this.namespaces = namespacesResponse
+
+        for (let namespace of namespacesResponse.data.items) {
+          if (!this.display.namespaces.hasOwnProperty(namespace.metadata.name)) {
+            this.$set(this.display.namespaces, namespace.metadata.name, true)
+          }
+        }
       }
     ))
-    .catch((error) => { this.errored = true, this.error = error })
-    .finally(() => this.loading = false)
+    .catch((error) => {
+      console.error(error)
+      this.errored = true, this.error = error
+    })
+    .finally(
+        () => this.loading = false
+      )
     }
 }
 </script>
