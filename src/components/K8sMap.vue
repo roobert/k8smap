@@ -73,14 +73,42 @@
         <div class="filters row">
           <div class="col">
             <b-button size="sm" variant="primary" :pressed="!display.ingresses"   v-on:click="toggleDisplay('ingresses')">ingresses</b-button>
+          </div>
+          <div class="col-2 title">
+            resource filters
+          </div>
+        </div>
+        <div class="filters row">
+          <div class="col">
             <b-button size="sm" variant="primary" :pressed="!display.services"    v-on:click="toggleDisplay('services')">services</b-button>
+          </div>
+          <div class="col-2 title">
+          </div>
+        </div>
+        <div class="filters row">
+          <div class="col">
             <b-button size="sm" variant="primary" :pressed="!display.deployments" v-on:click="toggleDisplay('deployments')">deployments</b-button>
+            <b-button size="sm" variant="primary" :pressed="!display.images" v-on:click="toggleDisplay('images')">images</b-button>
+          </div>
+          <div class="col-2 title">
+          </div>
+        </div>
+        <div class="filters row">
+          <div class="col">
             <b-button size="sm" variant="primary" :pressed="!display.nodes"       v-on:click="toggleDisplay('nodes')">nodes</b-button>
             <b-button size="sm" variant="primary" :pressed="!display.pods"        v-on:click="toggleDisplay('pods')">pods</b-button>
             <b-button size="sm" variant="primary" :pressed="!display.containers"  v-on:click="toggleDisplay('containers')">containers</b-button>
           </div>
           <div class="col-2 title">
-            resource types
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <k8s-map-deployments
+              v-bind:deployments="deployments"
+              v-bind:display="display"
+            >
+            </k8s-map-deployments>
           </div>
         </div>
         <div class="row">
@@ -104,6 +132,7 @@ import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import K8sMapDeployments from './K8sMapDeployments.vue'
 import K8sMapNode from './K8sMapNode.vue'
 import K8sMapContextDropDown from './K8sMapContextDropDown.vue'
 import K8sMapContextDropDownItem from './K8sMapContextDropDownItem.vue'
@@ -117,6 +146,7 @@ export default {
     'cluster'
   ],
   components: {
+    'k8s-map-deployments': K8sMapDeployments,
     'k8s-map-node': K8sMapNode,
     'k8s-map-context-drop-down': K8sMapContextDropDown,
     'k8s-map-context-drop-down-item': K8sMapContextDropDownItem
@@ -148,12 +178,15 @@ export default {
       nodes: null,
       pods: null,
       services: null,
+      ingresses: null,
+      deployments: null,
       display: {
         success: true,
         danger: true,
         ingresses: false,
         services: false,
-        deployments: false,
+        deployments: true,
+        images: true,
         nodes: true,
         pods: true,
         containers: true,
@@ -218,6 +251,7 @@ export default {
   mounted () {
     axios.all([
       axios.get('/config.vue.json'),
+      axios.get('/k8s/' + this.contextPathCurrent + '/apis/apps/v1/deployments '),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/namespaces'),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/nodes'),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/pods'),
@@ -226,12 +260,14 @@ export default {
     .then(axios.spread(
       (
         configResponse,
+        deploymentsResponse,
         namespacesResponse,
         nodesResponse,
         podsResponse,
         servicesResponse
       ) => {
         this.contexts = configResponse.data.contexts,
+        this.deployments = deploymentsResponse,
         this.nodes = nodesResponse,
         this.pods = podsResponse,
         this.services = servicesResponse,
