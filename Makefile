@@ -23,7 +23,8 @@ configure:
 # node build targets
 
 node-depends:
-	npm install
+	npm install \
+	  && sudo apt install -y nginx
 
 node-configure:
 	./bin/generate-vue-config > conf/config.vue.json \
