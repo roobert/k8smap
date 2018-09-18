@@ -29,7 +29,7 @@
               {{ container.image | name }}
             </div>
             </div>
-            <div class="version col-2">
+            <div class="version col-3">
               {{ container.image | version }}
             </div>
           </div>

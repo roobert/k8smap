@@ -8,7 +8,7 @@
     </div>
 
     <k8s-map-pod
-      v-for="pod in pods.data.items"
+      v-for="pod in nodePods"
       v-bind:key="pod.uid"
       v-bind:pod="pod"
       v-bind:display="display"
@@ -29,6 +29,11 @@ export default {
   ],
   components: {
     K8sMapPod
+  },
+  computed: {
+    nodePods () {
+      return this.pods.data.items.filter(pod => pod.spec.nodeName === this.node.metadata.name)
+    }
   }
 }
 </script>
