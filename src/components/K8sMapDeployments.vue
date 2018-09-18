@@ -49,10 +49,14 @@ export default {
   methods: {
     displayDeployment(deployment) {
       // FIXME conditional should be - if contains Available, or if contains non-Available
-      if ((this.display.deployments && this.display.namespaces[this.deployment.metadata.namespace]) && ( 
-          (this.deployment.status.conditions == 'Available' && this.display.success == true) || 
-            (this.deployment.status.conditions != 'Available' && this.display.danger == true))
-        ) {
+      if (
+        (this.display.deployments && this.display.namespaces[deployment.metadata.namespace]) &&
+          ( 
+            // if more than one statuses then 
+            (deployment.status.conditions.some( e => { return e.type === 'Available' }) && this.display.success == true) ||
+            (deployment.status.conditions.some( e => { return e.type !== 'Available' }) && this.display.danger == true)
+          )
+      ) {
         return true
       }
 
