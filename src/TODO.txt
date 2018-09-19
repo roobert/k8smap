@@ -1,6 +1,12 @@
 
 TODO
 
+ * add (/) button to each filter line
+
+ * correct button colours
+
+ * any metadata should be filterable
+
  * count in button for each type
 
  * nodes and pod names - strip/hide uids
