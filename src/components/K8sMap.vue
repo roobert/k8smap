@@ -8,7 +8,6 @@
         v-on:close='closePanel'
       >
         <vue-json-tree :data="panel.text" level="3"></vue-json-tree>
-      <pre>{{ panel.text }}</pre>
       </vue-slideout-panel>
       <div class="row header">
         <div class="col-sm context">
