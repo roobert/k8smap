@@ -19,7 +19,13 @@ export default {
 }
 </script>
 
-<style scoped>
-.metadata {
+<style>
+.container:hover {
+  border: 1px solid black ! important;
+  /* color: grey ! important; */
+}
+
+.container {
+  padding-top: 3px ! important;
 }
 </style>
