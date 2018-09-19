@@ -5,8 +5,9 @@
         id="panel"
         v-bind:value="panel.display"
         v-bind:widths="['80%']"
-        v-bind:text="panel.text"
+        v-on:close='closePanel'
       >
+        <vue-json-tree :data="panel.text" level="3"></vue-json-tree>
       <pre>{{ panel.text }}</pre>
       </vue-slideout-panel>
       <div class="row header">
@@ -141,6 +142,7 @@ import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import VueJsonTree from 'vue-json-tree'
 import VueSlideoutPanel from 'vue-slideout-panel'
 
 import K8sMapDeployments from './K8sMapDeployments.vue'
@@ -157,6 +159,7 @@ export default {
     'cluster'
   ],
   components: {
+    'vue-json-tree': VueJsonTree,
     'vue-slideout-panel': VueSlideoutPanel,
     'k8s-map-deployments': K8sMapDeployments,
     'k8s-map-node': K8sMapNode,
@@ -180,9 +183,11 @@ export default {
       this.display.namespaces[namespace] = !this.display.namespaces[namespace]
     },
     setPanelText: function(text) {
-      console.log("caught emit: " + text)
       this.panel.text = text
       this.panel.display = true
+    },
+    closePanel: function() {
+      this.panel.display = false
     }
   },
   data () {
