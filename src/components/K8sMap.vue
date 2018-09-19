@@ -1,13 +1,15 @@
 <template>
   <div id="k8s-map">
     <div class="container-fluid">
+      <!-- FIXME - only available in `input` (or similar) context? -->
+      <div v-on:keydown.esc="$store.commit('panelClose')"></div>
       <vue-slideout-panel
         id="panel"
-        v-bind:value="panel.display"
+        v-bind:value="$store.getters.panel.display"
         v-bind:widths="['80%']"
-        v-on:close='closePanel'
+        v-on:close="$store.commit('panelClose')"
       >
-        <vue-json-tree :data="panel.text" level="3"></vue-json-tree>
+        <vue-json-tree :data="$store.getters.panel.text" :level="3"></vue-json-tree>
       </vue-slideout-panel>
       <div class="row header">
         <div class="col-sm context">
@@ -126,7 +128,6 @@
             v-bind:node="node"
             v-bind:pods="pods"
             v-bind:display="display"
-            v-on:updatePanel="setPanelText"
           >
           </k8s-map-node>
         </div>
@@ -181,20 +182,9 @@ export default {
     toggleDisplayNamespace: function(namespace) {
       this.display.namespaces[namespace] = !this.display.namespaces[namespace]
     },
-    setPanelText: function(text) {
-      this.panel.text = text
-      this.panel.display = true
-    },
-    closePanel: function() {
-      this.panel.display = false
-    }
   },
   data () {
     return {
-      panel: {
-        text: "",
-        display: false
-      },
       contexts: [],
       errored: false,
       error: null,

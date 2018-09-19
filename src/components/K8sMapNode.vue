@@ -1,11 +1,9 @@
 <template>
-  <div v-show="display.nodes" class="node col-sm border">
+  <div v-show="display.nodes"
+    class="node col-sm border"
+  >
     <div class="head">
-      <div class="gke-nodepool">
-        <div @click="$emit('updatePanel', node)">
-        {{ node.metadata.labels['cloud.google.com/gke-nodepool'] }}
-        </div>
-      </div>
+      <div class="gke-nodepool">{{ node.metadata.labels['cloud.google.com/gke-nodepool'] }}</div>
       <div class="zone">{{ node.metadata.labels['failure-domain.beta.kubernetes.io/zone'] }}</div>
       <div class="hostname">{{ node.metadata.name }}</div>
       <div class="metadata"><pre>{{ node }}</pre></div>

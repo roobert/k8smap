@@ -1,5 +1,8 @@
 <template>
-  <div v-show="displayPod()" class="pod border">
+  <div
+    v-show="displayPod()"
+    class="pod border"
+  >
     <div v-bind:class="pod.status.phase" class="status"></div>
     <div class="title">{{ pod.metadata.name }}</div>
     <pre class="metadata">{{ pod }}</pre>
