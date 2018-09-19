@@ -1,6 +1,7 @@
 //import Vue from 'vue'
 import Vue from 'vue/dist/vue.js'
 import VueRouter from 'vue-router'
+import Vuex from 'vuex'
 import BootstrapVue from 'bootstrap-vue'
 
 import App from './App.vue'
@@ -10,6 +11,7 @@ import K8sMap from './components/K8sMap.vue'
 Vue.config.productionTip = false
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);
+Vue.use(Vuex);
 
 const routes = [
   {
