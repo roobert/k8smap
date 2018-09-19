@@ -14,8 +14,13 @@
         v-for="state in deployment.status.conditions"
         v-bind:key="state.type"
         v-bind:state="state"
+        @click.capture="$store.commit('panelText', state)"
       >
-        <div :class="state.type" class="status"></div>
+        <div
+          :class="state.type"
+          class="status"
+        >
+        </div>
       </div>
       <div>
         {{ deployment.metadata.name }}
@@ -103,6 +108,10 @@ export default {
   display: block;
   margin-right: 10px;
   margin-top: 5px;
+}
+
+.status:hover {
+  border: 1px solid black ! important;
 }
 
 .Available {

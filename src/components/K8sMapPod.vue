@@ -4,7 +4,13 @@
     class="pod border"
     @click.capture="$store.commit('panelText', pod)"
   >
-    <div v-bind:class="pod.status.phase" class="status"></div>
+    <div
+      v-bind:class="pod.status.phase"
+      class="status"
+      @click.capture="$store.commit('panelText', pod.status)"
+    >
+    </div>
+
     <div class="title">{{ pod.metadata.name }}</div>
     <pre class="metadata">{{ pod }}</pre>
     <k8s-map-container
@@ -12,6 +18,7 @@
       v-bind:key="container.name"
       v-bind:container="container"
       v-bind:display="display"
+      @click.capture="$store.commit('panelText', container)"
     >
     </k8s-map-container>
   </div>
