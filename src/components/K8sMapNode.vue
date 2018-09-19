@@ -1,6 +1,7 @@
 <template>
   <div v-show="display.nodes"
     class="node col border"
+    @click.capture="$store.commit('panelText', node)"
   >
     <div class="head">
       <div class="gke-nodepool">{{ node.metadata.labels['cloud.google.com/gke-nodepool'] }}</div>
@@ -49,5 +50,9 @@ export default {
 
 .metadata {
   display: none;
+}
+
+.node:hover {
+  border: 1px solid black ! important;
 }
 </style>

@@ -2,6 +2,7 @@
   <div
     v-show="displayPod()"
     class="pod border"
+    @click.capture="$store.commit('panelText', pod)"
   >
     <div v-bind:class="pod.status.phase" class="status"></div>
     <div class="title">{{ pod.metadata.name }}</div>
@@ -61,4 +62,7 @@ export default {
   background: #009900;
 }
 
+.pod:hover {
+  border: 1px solid black ! important;
+}
 </style>

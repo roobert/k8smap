@@ -6,35 +6,39 @@
       v-for="deployment in deployments.data.items"
       v-bind:key="deployment.uid"
       v-bind:deployment="deployment"
+      @click.capture="$store.commit('panelText', deployment)"
     >
-      <div class="deployment">{{ deployment.metadata.name }}</div>
-        <div
-          class="images"
-          v-show="display.images"
-          v-for="container in deployment.spec.template.spec.containers"
-          v-bind:key="container.name"
-          v-bind:container="container"
-        >
-          <div class="row">
-            <div class="name col">
-              <div
-                class="states"
-                v-for="state in deployment.status.conditions"
-                v-bind:key="state.type"
-                v-bind:state="state"
-              >
-                <div :class="state.type" class="status"></div>
-              </div>
-            <div>
-              {{ container.image | name }}
-            </div>
-            </div>
-            <div class="version col-3">
-              {{ container.image | version }}
-            </div>
+
+      <div
+        class="states"
+        v-for="state in deployment.status.conditions"
+        v-bind:key="state.type"
+        v-bind:state="state"
+      >
+        <div :class="state.type" class="status"></div>
+      </div>
+      <div>
+        {{ deployment.metadata.name }}
+      </div>
+      <div
+        class="image"
+        v-show="display.images"
+        v-for="container in deployment.spec.template.spec.containers"
+        v-bind:key="container.name"
+        v-bind:container="container"
+        @click.capture="$store.commit('panelText', container)"
+      >
+        <div class="row">
+          <div class="name col">
+            {{ container.image | name }}
+          </div>
+          <div class="version col-3">
+            {{ container.image | version }}
           </div>
         </div>
-      <pre class="metadata">{{ deployment }}</pre>
+
+        <pre class="metadata">{{ deployment }}</pre>
+      </div>
     </div>
   </div>
 </template>
@@ -75,20 +79,13 @@ export default {
 </script>
 
 <style>
-.metadata {
-  /* display: block ! important */
-}
-
 .deployment {
-  padding: 5 0 0 0;
+  padding: 10px;
   margin-top: 10px;
-}
-
-.deployment {
   background: #e6f2ff;
 }
 
-.images {
+.image {
   background: white;
   margin: 10px;
   padding: 5px 10px;
@@ -118,5 +115,17 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis ! important;
+}
+
+.deployment:hover {
+  border: 1px solid black ! important;
+}
+
+.image:hover {
+  border: 1px solid black ! important;
+}
+
+.image {
+  border: 1px solid lightgrey ! important;
 }
 </style>
