@@ -1,6 +1,6 @@
 <template>
   <div v-show="display.nodes"
-    class="node col-sm border"
+    class="node col border"
   >
     <div class="head">
       <div class="gke-nodepool">{{ node.metadata.labels['cloud.google.com/gke-nodepool'] }}</div>
@@ -43,6 +43,7 @@ export default {
 <style>
 .node {
   max-width: auto;
+  min-width: 30%;
   overflow: scroll;
 }
 
