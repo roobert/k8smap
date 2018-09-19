@@ -1,18 +1,14 @@
 
 TODO
+
+ * count in button for each type
+
+ * nodes and pod names - strip/hide uids
+
  * missing config should raise error
- - pods should be in namespaces
- * add a key in modal popup?
- * zone / node / pod / container state
- * flexbox - stretch header column
- * foldable 'details' pane
- * new window 'details' pane
  * colour scheme
  * layout
- * dockerize
- * detect project / cluster
- * multiple node pools?
- * nodes and pod names - strip/hide uids
+
  * related pods - colour code a dot (based on metadata?)
  * display
    * services

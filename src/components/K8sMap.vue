@@ -1,6 +1,14 @@
 <template>
   <div id="k8s-map">
     <div class="container-fluid">
+      <vue-slideout-panel
+        id="panel"
+        v-bind:value="panel.display"
+        v-bind:widths="['80%']"
+        v-bind:text="panel.text"
+      >
+      <pre>{{ panel.text }}</pre>
+      </vue-slideout-panel>
       <div class="row header">
         <div class="col-sm context">
           <b-dropdown
@@ -118,6 +126,7 @@
             v-bind:node="node"
             v-bind:pods="pods"
             v-bind:display="display"
+            v-on:updatePanel="setPanelText"
           >
           </k8s-map-node>
         </div>
@@ -131,6 +140,8 @@
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+import VueSlideoutPanel from 'vue-slideout-panel'
 
 import K8sMapDeployments from './K8sMapDeployments.vue'
 import K8sMapNode from './K8sMapNode.vue'
@@ -146,6 +157,7 @@ export default {
     'cluster'
   ],
   components: {
+    'vue-slideout-panel': VueSlideoutPanel,
     'k8s-map-deployments': K8sMapDeployments,
     'k8s-map-node': K8sMapNode,
     'k8s-map-context-drop-down': K8sMapContextDropDown,
@@ -166,10 +178,19 @@ export default {
     },
     toggleDisplayNamespace: function(namespace) {
       this.display.namespaces[namespace] = !this.display.namespaces[namespace]
+    },
+    setPanelText: function(text) {
+      console.log("caught emit: " + text)
+      this.panel.text = text
+      this.panel.display = true
     }
   },
   data () {
     return {
+      panel: {
+        text: "",
+        display: false
+      },
       contexts: [],
       errored: false,
       error: null,
@@ -281,6 +302,7 @@ export default {
       }
     ))
     .catch((error) => {
+      // eslint-disable-next-line
       console.error(error)
       this.errored = true, this.error = error
     })

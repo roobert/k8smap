@@ -113,4 +113,10 @@ export default {
   width: 10px;
   background: #009900 ! important;
 }
+
+.version {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis ! important;
+}
 </style>
