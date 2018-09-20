@@ -1,0 +1,18 @@
+language: generic
+sudo: required
+dist: trusty
+git:
+    depth: 200
+services:
+    - docker
+branches:
+    only:
+        - master
+cache:
+    directories:
+        - ~/bin
+        - ~/opt
+script:
+    - set -e
+    - docker build -t k8smap .
+    - $TRAVIS_BUILD_DIR/bin/push.sh
