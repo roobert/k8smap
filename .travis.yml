@@ -12,6 +12,14 @@ cache:
     directories:
         - ~/bin
         - ~/opt
+
+before_install:
+    # See https://github.com/travis-ci/travis-ci/issues/7940
+    - curl ci-utils.bwcom.io/gcloud/install | bash
+    - curl ci-utils.bwcom.io/gcloud/auth | bash
+    - curl ci-utils.bwcom.io/slipstream/install | bash
+    - export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/tmp/gcp-service-account-key.json
+
 script:
     - set -e
     - docker build -t k8smap .
