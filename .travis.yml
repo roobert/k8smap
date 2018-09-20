@@ -15,4 +15,4 @@ cache:
 script:
     - set -e
     - docker build -t k8smap .
-    - $TRAVIS_BUILD_DIR/bin/push.sh
+    - $TRAVIS_BUILD_DIR/bin/docker-publish.sh
