@@ -1,7 +1,15 @@
 
 TODO
+ * improve ingress view
+ * improve service view
 
- * add (/) button to each filter line
+ * group sections with vertical side tab? or use icons?
+
+ * filter by node pool
+ * improve button colour contrast
+ * link to page from resource type
+
+ * logs?
 
  * correct button colours
 

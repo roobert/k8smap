@@ -18,7 +18,8 @@ const store = new Vuex.Store({
   state: {
     panel: {
       display: false,
-      text: ""
+      text: "",
+      treeDepth: 3,
     },
   },
   getters: {
@@ -33,7 +34,10 @@ const store = new Vuex.Store({
     },
     panelClose (state) {
       state.panel.display = false
-    }
+    },
+    panelTreeDepth (state, depth) {
+      state.panel.treeDepth = depth
+    },
   }
 })
 

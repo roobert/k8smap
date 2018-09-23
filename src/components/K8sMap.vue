@@ -9,7 +9,10 @@
         v-bind:widths="['80%']"
         v-on:close="$store.commit('panelClose')"
       >
-        <vue-json-tree :data="$store.getters.panel.text" :level="3"></vue-json-tree>
+      <!-- fixme: update plugin to allow dynamically changing of tree depth -->
+      <!-- button class='btn btn-sm' @click="$store.commit('panelTreeDepth', 99)">Expand Tree</button -->
+        <vue-json-tree :data="$store.getters.panel.text" :level="$store.getters.panel.treeDepth">
+        </vue-json-tree>
       </vue-slideout-panel>
       <div class="row header">
         <div class="col-sm context">
@@ -55,6 +58,10 @@
       <section v-else>
         <div class="filters row">
           <div class="col">
+            <b-button-group size="sm" class="button-group">
+              <b-button v-on:click="display.success = false; display.danger = false">-</b-button>
+              <b-button v-on:click="display.success = true; display.danger = true">+</b-button>
+            </b-button-group>
             <b-button size="sm" variant="success" :pressed="!display.success" class="ok" v-on:click="toggleDisplay('success')">ok</b-button>
             <b-button size="sm" variant="danger" :pressed="!display.danger" class="failure" v-on:click="toggleDisplay('danger')">failure</b-button>
           </div>
@@ -64,6 +71,10 @@
         </div>
         <div class="filters row">
           <div class="namespaces col">
+            <b-button-group size="sm" class="button-group">
+              <b-button v-on:click="allNamespaces(false)">-</b-button>
+              <b-button v-on:click="allNamespaces(true)">+</b-button>
+            </b-button-group>
             <b-button
               size="sm"
               variant="primary"
@@ -82,6 +93,10 @@
         </div>
         <div class="filters row">
           <div class="col">
+            <b-button-group size="sm" class="button-group">
+              <b-button v-on:click="display.ingresses = false">-</b-button>
+              <b-button v-on:click="display.ingresses = true">+</b-button>
+            </b-button-group>
             <b-button size="sm" variant="primary" :pressed="!display.ingresses"   v-on:click="toggleDisplay('ingresses')">ingresses</b-button>
           </div>
           <div class="col-2 title">
@@ -90,6 +105,10 @@
         </div>
         <div class="filters row">
           <div class="col">
+            <b-button-group size="sm" class="button-group">
+              <b-button v-on:click="display.services = false">-</b-button>
+              <b-button v-on:click="display.services = true">+</b-button>
+            </b-button-group>
             <b-button size="sm" variant="primary" :pressed="!display.services"    v-on:click="toggleDisplay('services')">services</b-button>
           </div>
           <div class="col-2 title">
@@ -97,6 +116,10 @@
         </div>
         <div class="filters row">
           <div class="col">
+            <b-button-group size="sm" class="button-group">
+              <b-button v-on:click="display.deployments = false; display.images = false">-</b-button>
+              <b-button v-on:click="display.deployments = true; display.images = true">+</b-button>
+            </b-button-group>
             <b-button size="sm" variant="primary" :pressed="!display.deployments" v-on:click="toggleDisplay('deployments')">deployments</b-button>
             <b-button size="sm" variant="primary" :pressed="!display.images" v-on:click="toggleDisplay('images')">images</b-button>
           </div>
@@ -105,11 +128,33 @@
         </div>
         <div class="filters row">
           <div class="col">
+            <b-button-group size="sm" class="button-group">
+              <b-button v-on:click="display.nodes = false; display.pods = false; display.containers = false">-</b-button>
+              <b-button v-on:click="display.nodes = true; display.pods = true; display.containers = true">+</b-button>
+            </b-button-group>
             <b-button size="sm" variant="primary" :pressed="!display.nodes"       v-on:click="toggleDisplay('nodes')">nodes</b-button>
             <b-button size="sm" variant="primary" :pressed="!display.pods"        v-on:click="toggleDisplay('pods')">pods</b-button>
             <b-button size="sm" variant="primary" :pressed="!display.containers"  v-on:click="toggleDisplay('containers')">containers</b-button>
           </div>
           <div class="col-2 title">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <k8s-map-ingresses
+              v-bind:ingresses="ingresses"
+              v-bind:display="display"
+            >
+            </k8s-map-ingresses>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <k8s-map-services
+              v-bind:services="services"
+              v-bind:display="display"
+            >
+            </k8s-map-services>
           </div>
         </div>
         <div class="row">
@@ -145,6 +190,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VueJsonTree from 'vue-json-tree'
 import VueSlideoutPanel from 'vue-slideout-panel'
 
+import K8sMapIngresses from './K8sMapIngresses.vue'
+import K8sMapServices from './K8sMapServices.vue'
 import K8sMapDeployments from './K8sMapDeployments.vue'
 import K8sMapNode from './K8sMapNode.vue'
 import K8sMapContextDropDown from './K8sMapContextDropDown.vue'
@@ -161,6 +208,8 @@ export default {
   components: {
     'vue-json-tree': VueJsonTree,
     'vue-slideout-panel': VueSlideoutPanel,
+    'k8s-map-ingresses': K8sMapIngresses,
+    'k8s-map-services': K8sMapServices,
     'k8s-map-deployments': K8sMapDeployments,
     'k8s-map-node': K8sMapNode,
     'k8s-map-context-drop-down': K8sMapContextDropDown,
@@ -176,12 +225,17 @@ export default {
     contextPath(project, region, zone, cluster) {
       return [project, region, zone, cluster].join('/')
     },
-    toggleDisplay: function(type) {
+    toggleDisplay(type) {
       this.display[type] = !this.display[type]
     },
     toggleDisplayNamespace: function(namespace) {
       this.display.namespaces[namespace] = !this.display.namespaces[namespace]
     },
+    allNamespaces (display) {
+      for (var namespace in this.display.namespaces) {
+        this.display.namespaces[namespace] = display
+      }
+    }
   },
   data () {
     return {
@@ -198,8 +252,8 @@ export default {
       display: {
         success: true,
         danger: true,
-        ingresses: false,
-        services: false,
+        ingresses: true,
+        services: true,
         deployments: true,
         images: true,
         nodes: true,
@@ -268,6 +322,7 @@ export default {
       axios.get('/config.vue.json'),
       axios.get('/k8s/' + this.contextPathCurrent + '/apis/apps/v1/deployments '),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/namespaces'),
+      axios.get('/k8s/' + this.contextPathCurrent + '/apis/extensions/v1beta1/ingresses'),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/nodes'),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/pods'),
       axios.get('/k8s/' + this.contextPathCurrent + '/api/v1/services'),
@@ -277,12 +332,14 @@ export default {
         configResponse,
         deploymentsResponse,
         namespacesResponse,
+        ingressesResponse,
         nodesResponse,
         podsResponse,
         servicesResponse
       ) => {
         this.contexts = configResponse.data.contexts,
         this.deployments = deploymentsResponse,
+        this.ingresses = ingressesResponse,
         this.nodes = nodesResponse,
         this.pods = podsResponse,
         this.services = servicesResponse,
@@ -355,8 +412,12 @@ export default {
 }
 
 .filters button {
-  margin-right: 10px;
+  margin-left: 10px;
   margin-top: 10px;
+}
+
+.button-group button {
+  margin-right: 0px ! important;
 }
 
 .filters .title {
