@@ -4,9 +4,11 @@
     class="pod border"
     @click.capture="$store.commit('panelText', pod)"
   >
+
+  <!-- v-bind:class="pod.status.phase" -->
     <div
-      v-bind:class="pod.status.phase"
-      class="status"
+      class="status border"
+      v-bind:class="[ podStatus() ? 'Success' : '']"
       @click.capture="$store.commit('panelText', pod.status)"
     >
     </div>
@@ -18,6 +20,7 @@
       v-bind:key="container.name"
       v-bind:container="container"
       v-bind:display="display"
+      v-bind:statuses="pod.status.containerStatuses"
       @click.capture="$store.commit('panelText', container)"
     >
     </k8s-map-container>
@@ -46,6 +49,9 @@ export default {
       }
 
       return false
+    },
+    podStatus() {
+      return ! this.pod.status.conditions.some( condition => condition.status === "False" )
     }
   }
 }
@@ -63,7 +69,7 @@ export default {
   margin-top: 5px;
 }
 
-.Running {
+.Success {
   height: 10px;
   width: 10px;
   background: #009900;

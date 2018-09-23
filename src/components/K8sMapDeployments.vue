@@ -17,7 +17,7 @@
         @click.capture="$store.commit('panelText', state)"
       >
         <div
-          :class="state.type"
+          :class="[stateGood(state) ? 'Success' : '']"
           class="status"
         >
         </div>
@@ -62,13 +62,22 @@ export default {
         (this.display.deployments && this.display.namespaces[deployment.metadata.namespace]) &&
           ( 
             // if more than one statuses then 
-            (deployment.status.conditions.some( e => { return e.type === 'Available' }) && this.display.success == true) ||
-            (deployment.status.conditions.some( e => { return e.type !== 'Available' }) && this.display.danger == true)
+            (deployment.status.conditions.some( e => { return this.stateGood(e) }) && this.display.success == true) ||
+            (deployment.status.conditions.some( e => { return !this.stateGood(e) }) && this.display.danger == true)
           )
       ) {
         return true
       }
 
+      return false
+    },
+    stateGood(state) {
+      if (
+           (state.type == 'Available' && state.status == 'True') ||
+           (state.type == 'Progressing' && state.reason == 'NewReplicaSetAvailable' && state.status == 'True')
+      ) {
+         return true
+      }
       return false
     }
   },
@@ -114,7 +123,7 @@ export default {
   border: 1px solid black ! important;
 }
 
-.Available {
+.Success {
   height: 10px;
   width: 10px;
   background: #009900 ! important;

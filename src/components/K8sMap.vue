@@ -356,6 +356,7 @@ export default {
 
 .filters button {
   margin-right: 10px;
+  margin-top: 10px;
 }
 
 .filters .title {
