@@ -6,7 +6,9 @@ APP=k8smap
 
 gcloud -q auth configure-docker
 
-docker -- push "eu.gcr.io/$GCP_PROJECT_NAME/$APP"
+echo "image name: eu.gcr.io/$GCP_PROJECT_NAME/$APP"
+
+docker push "eu.gcr.io/$GCP_PROJECT_NAME/$APP"
 
 function json_escape {
   echo -n $1 | python -c 'import json,sys; print json.dumps(sys.stdin.read(), ensure_ascii=False, encoding="utf-8")'
