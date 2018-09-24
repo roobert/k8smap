@@ -9,7 +9,7 @@
         v-bind:widths="['80%']"
         v-on:close="$store.commit('panelClose')"
       >
-      <!-- fixme: update plugin to allow dynamically changing of tree depth -->
+      <!-- FIXME: update plugin to allow dynamically changing of tree depth -->
       <!-- button class='btn btn-sm' @click="$store.commit('panelTreeDepth', 99)">Expand Tree</button -->
         <vue-json-tree :data="$store.getters.panel.text" :level="$store.getters.panel.treeDepth">
         </vue-json-tree>
