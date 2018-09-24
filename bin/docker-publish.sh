@@ -4,7 +4,7 @@ set -e
 
 APP=k8smap
 COMMIT_DESCRIBE=$(git describe --all --tags)
-IMAGE_PATH="eu.gcr.io/$GCP_PROJECT_NAME/$APP"
+IMAGE="eu.gcr.io/$GCP_PROJECT_NAME/$APP"
 
 gcloud -q auth configure-docker
 
