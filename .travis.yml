@@ -23,5 +23,5 @@ before_install:
 
 script:
     - set -e
-    - docker build -t eu.gcr.io/$GCP_PROJECT_NAME/k8smap:$GIT_DESCRIBE .
+    - docker build -t eu.gcr.io/$GCP_PROJECT_NAME/k8smap .
     - $TRAVIS_BUILD_DIR/bin/docker-publish.sh
