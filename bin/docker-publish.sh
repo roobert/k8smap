@@ -2,7 +2,16 @@
 
 set -e
 
-APP=k8smap
+if [[ test -z ${GCP_PROJECT_NAME} ]] then
+  echo "GCP_PROJECT_NAME not set"
+  exit 1
+fi
+
+if [[ test -z ${APP} ]] then
+  echo "APP not set"
+  exit 1
+fi
+
 COMMIT_DESCRIBE=$(git describe --all --tags)
 IMAGE="eu.gcr.io/$GCP_PROJECT_NAME/$APP"
 
