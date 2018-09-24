@@ -22,7 +22,7 @@ COMMIT_SHA=$(git rev-parse HEAD)
 COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 IMAGE_ID=$(docker images -q $IMAGE)
 DOCKER_INSPECT=$(docker inspect $IMAGE_ID)
-SS_PROJECT=$(echo $GCP_PROJECT_NAME | cut -d\- -f2)
+SS_PROJECT=$(echo $GCP_PROJECT_NAME | cut -d\- -f3)
 
 
 JSON=$(cat <<EOF
@@ -49,6 +49,6 @@ EOF
 
 echo $JSON > image.json
 
-cat image.json
+cat image.json | jq .
 
 gsutil cp image.json gs://${GCP_PROJECT_NAME}-image-metadata/${APP}/travis-build.${TRAVIS_BUILD_NUMBER}.json
