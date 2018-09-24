@@ -2,12 +2,12 @@
 
 set -e
 
-if [[ -z ${GCP_PROJECT_NAME} ]] then
+if [[ -z ${GCP_PROJECT_NAME} ]]; then
   echo "GCP_PROJECT_NAME not set"
   exit 1
 fi
 
-if [[ -z ${APP} ]] then
+if [[ -z ${APP} ]]; then
   echo "APP not set"
   exit 1
 fi
