@@ -22,8 +22,7 @@ COMMIT_SHA=$(git rev-parse HEAD)
 COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 IMAGE_ID=$(docker images -q $IMAGE)
 DOCKER_INSPECT=$(docker inspect $IMAGE_ID)
-SS_PROJECT=$(echo $GCP_PROJECT_NAME | cut -d\- -f3)
-
+SS_PROJECT=$(echo $GCP_PROJECT_NAME | cut -d\- -f3 | tr -d '[0-9]')
 
 JSON=$(cat <<EOF
 {
