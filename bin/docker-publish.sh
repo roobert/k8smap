@@ -4,7 +4,7 @@ set -e
 
 APP=k8smap
 
-gcloud auth configure-docker
+gcloud -q auth configure-docker
 
 docker -- push "eu.gcr.io/$GCP_PROJECT_NAME/$APP"
 
