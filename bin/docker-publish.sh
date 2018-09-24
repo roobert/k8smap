@@ -3,12 +3,14 @@
 set -e
 
 APP=k8smap
+COMMIT_DESCRIBE=$(git describe --all --tags)
+IMAGE_PATH="eu.gcr.io/$GCP_PROJECT_NAME/$APP:$COMMIT_DESCRIBE"
 
 gcloud -q auth configure-docker
 
-echo "image name: eu.gcr.io/$GCP_PROJECT_NAME/$APP"
+echo "image name: $IMAGE"
 
-docker push "eu.gcr.io/$GCP_PROJECT_NAME/$APP"
+docker push "$IMAGE"
 
 function json_escape {
   echo -n $1 | python -c 'import json,sys; print json.dumps(sys.stdin.read(), ensure_ascii=False, encoding="utf-8")'
@@ -18,8 +20,7 @@ COMMIT_AUTHOR="${COMMIT_AUTHOR:-$(git log --format=%an -n 1)}"
 COMMIT_MESSAGE="${COMMIT_MESSAGE:-$(git log --format=%B -n 1)}"
 COMMIT_SHA=$(git rev-parse HEAD)
 COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-COMMIT_DESCRIBE=$(git describe)
-IMAGE_ID=$(docker images -q eu.gcr.io/$GCP_PROJECT_NAME/$APP:$(git describe))
+IMAGE_ID=$(docker images -q $IMAGE)
 DOCKER_INSPECT=$(docker inspect $IMAGE_ID)
 
 JSON=$(cat <<EOF

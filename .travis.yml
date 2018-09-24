@@ -19,8 +19,9 @@ before_install:
     - curl ci-utils.bwcom.io/gcloud/auth | bash
     - curl ci-utils.bwcom.io/slipstream/install | bash
     - export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/tmp/gcp-service-account-key.json
+    - export GIT_DESCRIBE=$(git describe --all --tags)
 
 script:
     - set -e
-    - docker build -t eu.gcr.io/$GCP_PROJECT_NAME/k8smap .
+    - docker build -t eu.gcr.io/$GCP_PROJECT_NAME/k8smap:$GIT_DESCRIBE .
     - $TRAVIS_BUILD_DIR/bin/docker-publish.sh
